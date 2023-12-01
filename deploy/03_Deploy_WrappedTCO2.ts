@@ -2,7 +2,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { networkConfig } from "../helper-hardhat-config";
 import { ethers } from "hardhat";
-import { WrappedTCO2Factory } from "../typechain-types/contracts/WrappedTCO2Factory";
+import { WrappedTCO2Factory } from "../typechain/contracts/WrappedTCO2Factory";
 import { WrappedTCO2 } from "../typechain/contracts/WrappedTCO2.sol";
 const WrappedTCO2Artifact = require("../artifacts/contracts/WrappedTCO2.sol/WrappedTCO2.json");
 const func: DeployFunction = async function ({
@@ -22,10 +22,12 @@ const func: DeployFunction = async function ({
       "WrappedTCO2Factory",
       WrappedTCO2Factory.address
     )) as WrappedTCO2Factory;
+    await wrappedTCO2Factory.addRequest(
+      "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD",
+      "RAW,ETH,USD,VOLUME24HOUR"
+    );
     // Sending the transaction
-    console.log("Creating WrappedTCO2...");
     const txResponse = await wrappedTCO2Factory.createWrappedTCO2(tco2Address);
-    console.log("txResponse:", txResponse);
     // Waiting for the transaction to be mined
     const txReceipt = await txResponse.wait();
 

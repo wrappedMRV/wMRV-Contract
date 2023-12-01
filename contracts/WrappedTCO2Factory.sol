@@ -2,8 +2,11 @@
 pragma solidity 0.8.14;
 
 import "./WrappedTCO2.sol";
+import "./IOracleUrlSource.sol";
 
-contract WrappedTCO2Factory {
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
     address[] public wrappedTCO2Contracts;
     mapping(address => address) underlyingToWrapped;
 
@@ -11,8 +14,12 @@ contract WrappedTCO2Factory {
     uint256 fee;
     address public oracle;
     address public link;
-    // Event to emit when a new WrappedTCO2 is created
+
+    // mapping(uint256 => RequestDetails) public requests;
+    RequestDetails[] public requests;
+
     event WrappedTCO2Created(address indexed wrappedTCO2Address);
+    event RequestAdded(uint256 indexed id);
 
     constructor(
         address _oracle,
@@ -37,7 +44,8 @@ contract WrappedTCO2Factory {
             oracle,
             jobId,
             fee,
-            link
+            link,
+            address(this)
         );
         wrappedTCO2Contracts.push(address(wrappedTCO2));
         underlyingToWrapped[_tco2TokenAddress] = address(wrappedTCO2);
@@ -46,6 +54,22 @@ contract WrappedTCO2Factory {
 
     function getWrappedTCO2Contracts() public view returns (address[] memory) {
         return wrappedTCO2Contracts;
+    }
+
+    function addRequest(
+        string memory url,
+        string memory path
+    ) public onlyOwner {
+        requests.push(RequestDetails(url, path));
+        emit RequestAdded(requests.length - 1);
+    }
+
+    // Function to retrieve request details
+    function getRequestDetails(
+        uint256 id
+    ) public view returns (RequestDetails memory) {
+        require(id < requests.length, "Invalid request id");
+        return requests[id];
     }
 
     function stringToBytes32(

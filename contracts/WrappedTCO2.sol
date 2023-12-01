@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 
 import "./IToucanCarbonOffsets.sol";
+import "./IOracleUrlSource.sol";
 
 interface IToucanCarbonOffsetsBase is IToucanCarbonOffsets, IERC20 {
     function getGlobalProjectVintageIdentifiers()
@@ -22,10 +23,11 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
     bytes32 jobId;
     uint256 fee;
     address public oracle;
-
+    IOracleUrlSource public oracleUrlSource;
     IToucanCarbonOffsetsBase public tco2Token;
+    mapping(bytes32 => uint256) private requestIdToId;
 
-    uint256 public projectRatings;
+    mapping(uint256 => uint256) public projectRatings;
 
     string private _name;
     string private _symbol;
@@ -35,7 +37,8 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         address _oracle,
         bytes32 _jobId, //ca98366cc7314957b8c012c72f05aeeb for uint256 -> https://docs.chain.link/any-api/testnet-oracles
         uint256 _fee, //0.1
-        address _link
+        address _link,
+        address _dataSource
     ) ERC20("", "") {
         tco2Token = IToucanCarbonOffsetsBase(_tco2TokenAddress);
 
@@ -60,6 +63,7 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         oracle = _oracle;
         jobId = _jobId;
         fee = _fee;
+        oracleUrlSource = IOracleUrlSource(_dataSource);
     }
 
     /**
@@ -93,53 +97,52 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
 
     /**
      * Create a Chainlink request to retrieve API response, find the target
-     * data, then multiply by timesAmount (to remove decimal places from data).
+     * data.
      */
-    function requestData(
-        string memory url,
-        string memory path,
-        int256 timesAmount
-    ) public returns (bytes32 requestId) {
+    function requestData(uint256 id) public returns (bytes32 requestId) {
+        //Should the user pay?
+        // require(
+        //     IERC20(chainlinkTokenAddress()).transferFrom(
+        //         msg.sender,
+        //         address(this),
+        //         fee
+        //     ),
+        //     "Unable to transfer LINK"
+        // );
+
         Chainlink.Request memory request = buildChainlinkRequest(
             jobId,
             address(this),
             this.fulfill.selector
         );
 
-        // Set the URL to perform the GET request on
-        request.add("get", url);
-
-        // Set the path to find the desired data in the API response, where the response format is:
-        // {"RAW":
-        //   {"ETH":
-        //    {"USD":
-        //     {
-        //      "VOLUME24HOUR": xxx.xxx,
-        //     }
-        //    }
-        //   }
-        //  }
-        request.add("path", path);
-
-        // Multiply the result by timesAmount to remove decimals
-        request.addInt("times", timesAmount);
+        IOracleUrlSource.RequestDetails memory requestDetails = oracleUrlSource
+            .getRequestDetails(id);
+        request.add("get", requestDetails.url);
+        request.add("path", requestDetails.path);
 
         // Sends the request
-        return sendChainlinkRequestTo(oracle, request, fee);
+        requestId = sendChainlinkRequestTo(oracle, request, fee);
+        requestIdToId[requestId] = id;
+
+        return requestId;
     }
 
     function fulfill(
         bytes32 _requestId,
         uint256 _data
     ) public recordChainlinkFulfillment(_requestId) {
-        projectRatings = _data;
+        uint256 id = requestIdToId[_requestId];
+        projectRatings[id] = _data;
+
+        delete requestIdToId[_requestId];
     }
 
     function retireFrom(
         address account,
         uint256 amount
     ) external returns (uint256 retirementEventId) {
-        tco2Token.retireFrom(account, amount);
+        return tco2Token.retireFrom(account, amount);
     }
 
     function burnFrom(address account, uint256 amount) external {

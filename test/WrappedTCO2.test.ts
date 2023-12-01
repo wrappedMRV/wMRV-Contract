@@ -8,8 +8,8 @@ import {
 } from "hardhat";
 import { WrappedTCO2 } from "../typechain/contracts/WrappedTCO2.sol/WrappedTCO2";
 import { ToucanCarbonOffsets } from "../typechain/contracts/mocks/ToucanCarbonOffsets";
-import { MockOracle } from "../typechain-types/contracts/mocks/MockOracle";
-import { LinkToken } from "../typechain-types/contracts/mocks/LinkToken";
+import { MockOracle } from "../typechain/contracts/mocks/MockOracle";
+import { LinkToken } from "../typechain/contracts/mocks/LinkToken.sol/LinkToken";
 import { autoFundCheck } from "../utils";
 import { networkConfig } from "../helper-hardhat-config";
 import { BigNumber } from "ethers";
@@ -81,11 +81,7 @@ describe("WrappedTCO2 Contract", function () {
 
   describe("Chainlink Oracle functionality", function () {
     it("Should be able to request data", async function () {
-      const tx = wrappedTCO2.requestData(
-        "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD",
-        "RAW,ETH,USD,VOLUME24HOUR",
-        "1000000000000000000"
-      );
+      const tx = wrappedTCO2.requestData(0);
       await expect(tx).to.emit(wrappedTCO2, "ChainlinkRequested");
 
       // const tx_receipt = await tx.wait();

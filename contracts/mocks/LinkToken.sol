@@ -50,13 +50,6 @@ abstract contract ERC677 is IERC20 {
         uint value,
         bytes memory data
     ) public virtual returns (bool success);
-
-    event Transfer(
-        address indexed from,
-        address indexed to,
-        uint value,
-        bytes data
-    );
 }
 
 abstract contract ERC677Receiver {
@@ -80,7 +73,6 @@ abstract contract ERC677Token is ERC20, ERC677 {
         bytes memory _data
     ) public virtual override returns (bool success) {
         super.transfer(_to, _value);
-        emit Transfer(msg.sender, _to, _value, _data);
         if (isContract(_to)) {
             contractFallback(_to, _value, _data);
         }

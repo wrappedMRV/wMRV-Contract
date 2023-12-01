@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "hardhat:generate-abi": "hardhat deploy --export frontend/src/contracts/contracts.json",
-    "hardhat:clean": "rm -fr ./artifacts ./cache ./typechain-types",
+    "hardhat:clean": "rm -fr ./artifacts ./cache ./typechain",
     "hardhat:deploy": "hardhat deploy --network localhost --export frontend/src/contracts/contracts.json",
     "hardhat:node": "hardhat node",
     "frontend:dev": "cd ./frontend && pnpm run dev",

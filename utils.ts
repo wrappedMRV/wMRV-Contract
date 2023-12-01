@@ -7,7 +7,6 @@ export const autoFundCheck = async (
   chainId: string,
   linkTokenAddress: string
 ) => {
-  console.log("Checking to see if contract can be auto-funded with LINK:");
   const accounts = await ethers.getSigners();
   const signer = accounts[0];
   const LinkToken = await ethers.getContractFactory("LinkToken");

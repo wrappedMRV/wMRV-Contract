@@ -17,11 +17,7 @@ skip
     });
 
     it("should successfully make an external API request and get a result", async () => {
-      const transaction = await wrappedTCO2.requestData(
-        "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD",
-        "RAW,ETH,USD,VOLUME24HOUR",
-        "1000000000000000000"
-      );
+      const transaction = await wrappedTCO2.requestData("0");
       await expect(transaction).to.emit(wrappedTCO2, "ChainlinkRequested");
 
       await transaction.wait();
@@ -30,7 +26,7 @@ skip
       await new Promise((resolve) => setTimeout(resolve, 420000));
 
       //Now check the result
-      const result = await wrappedTCO2.projectRatings();
+      const result = await wrappedTCO2.projectRatings(0);
       expect(result).to.be.gt(0);
     }).timeout(520000);
   });

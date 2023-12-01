@@ -10,8 +10,8 @@ import { WrappedTCO2 } from "../typechain/contracts/WrappedTCO2.sol/WrappedTCO2"
 import { WrappedTCO2Factory } from "../typechain/contracts/WrappedTCO2Factory";
 
 import { ToucanCarbonOffsets } from "../typechain/contracts/mocks/ToucanCarbonOffsets";
-import { MockOracle } from "../typechain-types/contracts/mocks/MockOracle";
-import { LinkToken } from "../typechain-types/contracts/mocks/LinkToken";
+import { MockOracle } from "../typechain/contracts/mocks/MockOracle";
+import { LinkToken } from "../typechain/contracts/mocks/LinkToken.sol/LinkToken";
 import { autoFundCheck } from "../utils";
 import { networkConfig } from "../helper-hardhat-config";
 import { BigNumber } from "ethers";

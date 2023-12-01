@@ -2,7 +2,7 @@ import { BigNumber } from "ethers";
 import { networkConfig } from "../helper-hardhat-config";
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment, TaskArguments } from "hardhat/types";
-import { WrappedTCO2 } from "../typechain-types/contracts/WrappedTCO2.sol/WrappedTCO2";
+import { WrappedTCO2 } from "../typechain/contracts/WrappedTCO2.sol/WrappedTCO2";
 
 task("request-data", "Request data from the oracle")
   .addParam("contract", "The address of the wTC02 to request data from")
