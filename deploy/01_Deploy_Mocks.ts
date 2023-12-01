@@ -3,7 +3,7 @@ import { BigNumber } from "ethers";
 import { formatBytes32String } from "ethers/lib/utils";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { VRFV2Wrapper } from "typechain-types/@chainlink/contracts/src/v0.8/VRFV2Wrapper";
+import { VRFV2Wrapper } from "../typechain-types/@chainlink/contracts/src/v0.8/vrf/VRFV2Wrapper.sol/VRFV2Wrapper";
 
 const DECIMALS = "18";
 const INITIAL_PRICE = BigNumber.from("3000000000000000");

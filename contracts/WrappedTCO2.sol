@@ -60,7 +60,6 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         oracle = _oracle;
         jobId = _jobId;
         fee = _fee;
-        requestData();
     }
 
     /**

@@ -12,6 +12,8 @@ import faucet from "./tasks/faucet";
 import "./tasks/withdraw-link";
 import "./tasks/accounts";
 import "./tasks/fund-link";
+import "./tasks/request-data";
+
 task("faucet", "Add funds to selected address")
   .addPositionalParam("receiver", "The address that will receive them")
   .setAction(async (args, { ethers }) => {

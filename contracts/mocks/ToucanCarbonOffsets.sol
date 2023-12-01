@@ -15,6 +15,14 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract ToucanCarbonOffsets is IToucanCarbonOffsets, ERC20 {
     constructor() ERC20("Toucan Carbon Offsets", "TCO2") {}
 
+    function getGlobalProjectVintageIdentifiers()
+        external
+        view
+        returns (string memory, string memory)
+    {
+        return ("123", "Project-Name");
+    }
+
     function retireFrom(
         address account,
         uint256 amount

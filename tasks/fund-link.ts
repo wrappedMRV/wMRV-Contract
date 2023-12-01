@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers";
-import { networkConfig } from "../chainlink-fullstack/packages/hardhat/helper-hardhat-config";
+import { networkConfig } from "../helper-hardhat-config";
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment, TaskArguments } from "hardhat/types";
 

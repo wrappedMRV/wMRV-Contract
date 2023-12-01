@@ -1,7 +1,6 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { networkConfig } from "../helper-hardhat-config";
-import { ethers } from "ethers";
 
 const func: DeployFunction = async function ({
   deployments,
@@ -31,6 +30,6 @@ const func: DeployFunction = async function ({
   });
 };
 
-func.tags = ["all", "api", "main"];
+func.tags = ["all", "tco2", "main"];
 
 export default func;
