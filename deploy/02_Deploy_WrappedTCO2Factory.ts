@@ -23,6 +23,7 @@ const func: DeployFunction = async function ({
     oracleAddress = networkConfig[chainId].oracle as string;
   }
   const { jobId, fee } = networkConfig[chainId];
+  console.log([oracleAddress, jobId, fee, linkTokenAddress]);
   await deploy("WrappedTCO2Factory", {
     from: deployer,
     args: [oracleAddress, jobId, fee, linkTokenAddress],

@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 import { HardhatUserConfig, task } from "hardhat/config";
 import "hardhat-deploy";
 import "hardhat-deploy-ethers";
@@ -13,6 +15,7 @@ import "./tasks/withdraw-link";
 import "./tasks/accounts";
 import "./tasks/fund-link";
 import "./tasks/request-data";
+import { networkConfig } from "./helper-hardhat-config";
 
 task("faucet", "Add funds to selected address")
   .addPositionalParam("receiver", "The address that will receive them")
@@ -20,10 +23,12 @@ task("faucet", "Add funds to selected address")
     const receiver = String(args.receiver);
     await faucet(receiver, ethers);
   });
-// task("deploy", "Deploy Factory").setAction(async (args, { ethers }) => {
-//   await deploy(ethers);
-// });
 
+const POLYGONSCAN_API_KEY =
+  process.env.POLYGONSCAN_API_KEY || "Your etherscan API key";
+const DEPLOYER_PRIVATE_KEY =
+  process.env.DEPLOYER_PRIVATE_KEY || "your private key";
+const INFURA_KEY = process.env.INFURA_KEY || "your infura key";
 const COMPILER_SETTINGS = {
   optimizer: {
     enabled: true,
@@ -78,6 +83,14 @@ const config: HardhatUserConfig = {
       allowUnlimitedContractSize: false,
       hardfork: "merge",
     },
+    mumbai: {
+      chainId: 80001,
+      url: `https://polygon-mumbai.infura.io/v3/${INFURA_KEY}`,
+      accounts: [DEPLOYER_PRIVATE_KEY],
+
+      saveDeployments: true,
+      loggingEnabled: true,
+    },
   },
   contractSizer: {
     alphaSort: true,
@@ -96,6 +109,9 @@ const config: HardhatUserConfig = {
   },
   gasReporter: {
     enabled: Boolean(process.env.REPORT_GAS),
+  },
+  etherscan: {
+    apiKey: POLYGONSCAN_API_KEY,
   },
 };
 
