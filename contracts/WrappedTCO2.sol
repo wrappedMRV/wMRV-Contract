@@ -91,7 +91,15 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         require(tco2Token.transfer(msg.sender, amount), "Transfer failed");
     }
 
-    function requestData() public returns (bytes32 requestId) {
+    /**
+     * Create a Chainlink request to retrieve API response, find the target
+     * data, then multiply by timesAmount (to remove decimal places from data).
+     */
+    function requestData(
+        string memory url,
+        string memory path,
+        int256 timesAmount
+    ) public returns (bytes32 requestId) {
         Chainlink.Request memory request = buildChainlinkRequest(
             jobId,
             address(this),
@@ -99,7 +107,7 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         );
 
         // Set the URL to perform the GET request on
-        request.add("get", "http://example.com/api/data");
+        request.add("get", url);
 
         // Set the path to find the desired data in the API response, where the response format is:
         // {"RAW":
@@ -111,7 +119,10 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         //    }
         //   }
         //  }
-        request.add("path", "RAW.ETH.USD.VOLUME24HOUR"); // Chainlink nodes prior to 1.0.0 support this format        request.add("path", "data,path");
+        request.add("path", path);
+
+        // Multiply the result by timesAmount to remove decimals
+        request.addInt("times", timesAmount);
 
         // Sends the request
         return sendChainlinkRequestTo(oracle, request, fee);

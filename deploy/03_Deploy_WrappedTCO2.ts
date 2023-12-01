@@ -3,7 +3,8 @@ import { DeployFunction } from "hardhat-deploy/types";
 import { networkConfig } from "../helper-hardhat-config";
 import { ethers } from "hardhat";
 import { WrappedTCO2Factory } from "../typechain-types/contracts/WrappedTCO2Factory";
-
+import { WrappedTCO2 } from "../typechain/contracts/WrappedTCO2.sol";
+const WrappedTCO2Artifact = require("../artifacts/contracts/WrappedTCO2.sol/WrappedTCO2.json");
 const func: DeployFunction = async function ({
   deployments,
   getNamedAccounts,
@@ -33,8 +34,14 @@ const func: DeployFunction = async function ({
       (event) => event.event === "WrappedTCO2Created"
     );
     const wrappedTCO2Address = event?.args?.wrappedTCO2Address;
-
-    console.log("WrappedTCO2 Address:", wrappedTCO2Address);
+    // const wrappedTCO2 = (await ethers.getContractAt(
+    //   "WrappedTCO2",
+    //   wrappedTCO2Address
+    // )) as WrappedTCO2;
+    await deployments.save("WrappedTCO2", {
+      abi: WrappedTCO2Artifact.abi, // Add the 'abi' property
+      address: wrappedTCO2Address,
+    });
   }
 };
 

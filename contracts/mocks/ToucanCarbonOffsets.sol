@@ -93,4 +93,9 @@ contract ToucanCarbonOffsets is IToucanCarbonOffsets, ERC20 {
     function projectVintageTokenId() external view returns (uint256) {
         return 1;
     }
+
+    //For testing
+    function mint(address account, uint256 amount) external {
+        _mint(account, amount);
+    }
 }

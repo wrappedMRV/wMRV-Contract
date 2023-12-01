@@ -30,6 +30,6 @@ const func: DeployFunction = async function ({
   });
 };
 
-func.tags = ["all", "tco2", "main"];
+func.tags = ["all", "factory", "tco2", "main"];
 
 export default func;
