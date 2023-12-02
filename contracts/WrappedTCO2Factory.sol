@@ -8,10 +8,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
     address[] public wrappedTCO2Contracts;
-    mapping(address => address) underlyingToWrapped;
+    mapping(address => address) public underlyingToWrapped;
 
-    bytes32 jobId;
-    uint256 fee;
+    bytes32 public jobId;
+    uint256 public fee;
     address public oracle;
     address public link;
 
