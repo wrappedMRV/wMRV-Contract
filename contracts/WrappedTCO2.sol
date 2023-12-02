@@ -15,9 +15,6 @@ interface IToucanCarbonOffsetsBase is IToucanCarbonOffsets, IERC20 {
         returns (string memory, string memory);
 }
 
-// mumbai contracts of toucan : https://app.toucan.earth/contracts#polygon-mumbai
-// facets to get test assets : https://faucet.toucan.earth/
-// EXample contract: https://github.com/smartcontractkit/chainlink-fullstack/blob/main/packages/hardhat/contracts/APIConsumer.sol
 contract WrappedTCO2 is ERC20, ChainlinkClient {
     using Chainlink for Chainlink.Request;
     bytes32 jobId;
