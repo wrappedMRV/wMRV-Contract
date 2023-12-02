@@ -23,7 +23,7 @@ contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
 
     constructor(
         address _oracle,
-        string memory _jobId, 
+        string memory _jobId,
         uint256 _fee,
         address _link
     ) {
@@ -41,9 +41,6 @@ contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
         );
         WrappedTCO2 wrappedTCO2 = new WrappedTCO2(
             _tco2TokenAddress,
-            oracle,
-            jobId,
-            fee,
             link,
             address(this)
         );

@@ -17,9 +17,6 @@ interface IToucanCarbonOffsetsBase is IToucanCarbonOffsets, IERC20 {
 
 contract WrappedTCO2 is ERC20, ChainlinkClient {
     using Chainlink for Chainlink.Request;
-    bytes32 jobId;
-    uint256 fee;
-    address public oracle;
     IOracleUrlSource public oracleUrlSource;
     IToucanCarbonOffsetsBase public tco2Token;
     mapping(bytes32 => uint256) private requestIdToId;
@@ -28,15 +25,14 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
 
     constructor(
         address _tco2TokenAddress,
-        address _oracle,
-        bytes32 _jobId,
-        uint256 _fee,
         address _link,
         address _dataSource
-    )  ERC20(
+    )
+        ERC20(
             generateTokenName(_tco2TokenAddress),
             generateTokenSymbol(_tco2TokenAddress)
-        ){
+        )
+    {
         tco2Token = IToucanCarbonOffsetsBase(_tco2TokenAddress);
 
         if (_link == address(0)) {
@@ -44,9 +40,7 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         } else {
             setChainlinkToken(_link);
         }
-        oracle = _oracle;
-        jobId = _jobId;
-        fee = _fee;
+
         oracleUrlSource = IOracleUrlSource(_dataSource);
     }
 
@@ -105,7 +99,7 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         // );
 
         Chainlink.Request memory request = buildChainlinkRequest(
-            jobId,
+            oracleUrlSource.jobId(),
             address(this),
             this.fulfill.selector
         );
@@ -116,7 +110,11 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         request.add("path", requestDetails.path);
 
         // Sends the request
-        requestId = sendChainlinkRequestTo(oracle, request, fee);
+        requestId = sendChainlinkRequestTo(
+            oracleUrlSource.oracle(),
+            request,
+            oracleUrlSource.fee()
+        );
         requestIdToId[requestId] = id;
 
         return requestId;

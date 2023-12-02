@@ -1,12 +1,10 @@
-import { BigNumber } from "ethers";
 import { networkConfig } from "../helper-hardhat-config";
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment, TaskArguments } from "hardhat/types";
 import { WrappedTCO2Factory } from "../typechain/contracts/WrappedTCO2Factory";
 
-task("request-data", "Request data from the oracle")
+task("create", "Request data from the oracle")
   .addParam("factory", "The address of the WrappedTCO2Factory")
-
   .addParam("contract", "The address of the TC02 to wrap")
   .setAction(
     async (taskArgs: TaskArguments, hre: HardhatRuntimeEnvironment) => {
@@ -34,16 +32,12 @@ task("request-data", "Request data from the oracle")
         (event) => event.event === "WrappedTCO2Created"
       );
       const newWrappedTCO2Address = event?.args?.wrappedTCO2Address;
-      const [oracle, jobId, fee, link] = await Promise.all([
-        wrappedTCO2FactoryContract.oracle(),
-        wrappedTCO2FactoryContract.jobId(),
-        wrappedTCO2FactoryContract.fee(),
-        wrappedTCO2FactoryContract.link(),
-      ]);
+      const link = await wrappedTCO2FactoryContract.link();
+
       console.log("New WrappedTCO2 address: ", newWrappedTCO2Address);
       console.log("To verify the contract, run the following command:");
       console.log(
-        `npx hardhat verify --network ${networkConfig[networkId].name} ${newWrappedTCO2Address} ${tco2Address} ${oracle} ${jobId} ${fee} ${link} ${factoryAddress}`
+        `npx hardhat verify --network ${networkConfig[networkId].name} ${newWrappedTCO2Address} ${tco2Address} ${link} ${factoryAddress}`
       );
     }
   );

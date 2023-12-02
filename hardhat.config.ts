@@ -15,6 +15,8 @@ import "./tasks/withdraw-link";
 import "./tasks/accounts";
 import "./tasks/fund-link";
 import "./tasks/request-data";
+import "./tasks/create";
+
 import { networkConfig } from "./helper-hardhat-config";
 
 task("faucet", "Add funds to selected address")

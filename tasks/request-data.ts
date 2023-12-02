@@ -38,7 +38,7 @@ task("request-data", "Request data from the oracle")
 
       const feeBN = BigNumber.from(fee);
       if (balance.gte(feeBN)) {
-        const result = await wrappedTCO2Contract.requestData();
+        const result = await wrappedTCO2Contract.requestData(0);
         await result.wait();
         console.log(
           `requestData has been done by ${signer.address} to ${wtco2Address}.Transaction Hash: ${result.hash}`

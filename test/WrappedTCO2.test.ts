@@ -59,10 +59,11 @@ describe("WrappedTCO2 Contract", function () {
 
   describe("Deployment", function () {
     it("Should set the right oracle address", async function () {
-      expect(await wrappedTCO2.oracle()).to.equal(oracle.address);
+      expect(await wrappedTCO2.name()).to.equal("wTCO2-123-Project-Name");
     });
-
-    // Add more deployment-related tests here
+    it("Should set the right oracle address", async function () {
+      expect(await wrappedTCO2.symbol()).to.equal("wTCO2-123");
+    });
   });
 
   describe("ERC20 functionality", function () {
@@ -75,8 +76,6 @@ describe("WrappedTCO2 Contract", function () {
       await wrappedTCO2.wrap(wrapAmount);
       expect(await wrappedTCO2.balanceOf(deployer)).to.equal(wrapAmount);
     });
-
-    // Add more ERC20 functionality tests here
   });
 
   describe("Chainlink Oracle functionality", function () {
@@ -90,8 +89,6 @@ describe("WrappedTCO2 Contract", function () {
       // );
       // expect(requestId).to.be.gt(0);
     });
-
-    // Add more Chainlink Oracle tests here
   });
 
   describe("Interaction with ToucanCarbonOffsets", function () {
@@ -101,11 +98,6 @@ describe("WrappedTCO2 Contract", function () {
 
       await toucanCarbonOffsetsMock.approve(wrappedTCO2.address, retireAmount);
       await wrappedTCO2.retireFrom(deployer, retireAmount);
-      // Add assertions based on your mock implementation
     });
-
-    // Add more tests for interactions with ToucanCarbonOffsets here
   });
-
-  // Additional tests for other functions of WrappedTCO2
 });
