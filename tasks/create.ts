@@ -34,28 +34,16 @@ task("request-data", "Request data from the oracle")
         (event) => event.event === "WrappedTCO2Created"
       );
       const newWrappedTCO2Address = event?.args?.wrappedTCO2Address;
-        Promise.all([            wrappedTCO2FactoryContract.oracle(),
-            wrappedTCO2FactoryContract.jobId(),
-            wrappedTCO2FactoryContract.fee(),
-            wrappedTCO2FactoryContract.link(),]);
+      const [oracle, jobId, fee, link] = await Promise.all([
+        wrappedTCO2FactoryContract.oracle(),
+        wrappedTCO2FactoryContract.jobId(),
+        wrappedTCO2FactoryContract.fee(),
+        wrappedTCO2FactoryContract.link(),
+      ]);
       console.log("New WrappedTCO2 address: ", newWrappedTCO2Address);
       console.log("To verify the contract, run the following command:");
-        console.log(
-            "npx hardhat verify --network " +
-            networkConfig[networkId].name +
-            " " +
-            newWrappedTCO2Address +
-            " " +
-            tco2Address
-        );
-
-        WrappedTCO2 wrappedTCO2 = new WrappedTCO2(
-            _tco2TokenAddress,
-            wrappedTCO2FactoryContract.oracle(),
-            wrappedTCO2FactoryContract.jobId(),
-            wrappedTCO2FactoryContract.fee(),
-            wrappedTCO2FactoryContract.link(),
-            address(this)
-        );
+      console.log(
+        `npx hardhat verify --network ${networkConfig[networkId].name} ${newWrappedTCO2Address} ${tco2Address} ${oracle} ${jobId} ${fee} ${link} ${factoryAddress}`
+      );
     }
   );
