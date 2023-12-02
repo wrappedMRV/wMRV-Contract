@@ -23,8 +23,8 @@ contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
 
     constructor(
         address _oracle,
-        string memory _jobId, //ca98366cc7314957b8c012c72f05aeeb for uint256 -> https://docs.chain.link/any-api/testnet-oracles
-        uint256 _fee, //0.1
+        string memory _jobId, 
+        uint256 _fee,
         address _link
     ) {
         oracle = _oracle;

@@ -26,31 +26,18 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
 
     mapping(uint256 => uint256) public projectRatings;
 
-    string private _name;
-    string private _symbol;
-
     constructor(
         address _tco2TokenAddress,
         address _oracle,
-        bytes32 _jobId, //ca98366cc7314957b8c012c72f05aeeb for uint256 -> https://docs.chain.link/any-api/testnet-oracles
-        uint256 _fee, //0.1
+        bytes32 _jobId,
+        uint256 _fee,
         address _link,
         address _dataSource
-    ) ERC20("", "") {
+    )  ERC20(
+            generateTokenName(_tco2TokenAddress),
+            generateTokenSymbol(_tco2TokenAddress)
+        ){
         tco2Token = IToucanCarbonOffsetsBase(_tco2TokenAddress);
-
-        string memory globalProjectId;
-        string memory vintageName;
-        (globalProjectId, vintageName) = tco2Token
-            .getGlobalProjectVintageIdentifiers();
-
-        _name = string(
-            abi.encodePacked("wTCO2-", globalProjectId, "-", vintageName)
-        );
-
-        _symbol = string(
-            abi.encodePacked("wTCO2-", globalProjectId, "-", vintageName)
-        );
 
         if (_link == address(0)) {
             setPublicChainlinkToken();
@@ -63,19 +50,29 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         oracleUrlSource = IOracleUrlSource(_dataSource);
     }
 
-    /**
-     * @dev Returns the name of the token.
-     */
-    function name() public view virtual override returns (string memory) {
-        return _name;
+    function generateTokenName(
+        address _tco2TokenAddress
+    ) private view returns (string memory) {
+        IToucanCarbonOffsetsBase tco2 = IToucanCarbonOffsetsBase(
+            _tco2TokenAddress
+        );
+        (string memory globalProjectId, string memory vintageName) = tco2
+            .getGlobalProjectVintageIdentifiers();
+        return
+            string(
+                abi.encodePacked("wTCO2-", globalProjectId, "-", vintageName)
+            );
     }
 
-    /**
-     * @dev Returns the symbol of the token, usually a shorter version of the
-     * name.
-     */
-    function symbol() public view virtual override returns (string memory) {
-        return _symbol;
+    function generateTokenSymbol(
+        address _tco2TokenAddress
+    ) private view returns (string memory) {
+        IToucanCarbonOffsetsBase tco2 = IToucanCarbonOffsetsBase(
+            _tco2TokenAddress
+        );
+        (string memory globalProjectId, ) = tco2
+            .getGlobalProjectVintageIdentifiers();
+        return string(abi.encodePacked("wTCO2-", globalProjectId));
     }
 
     function wrap(uint256 amount) public {
