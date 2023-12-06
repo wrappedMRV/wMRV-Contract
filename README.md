@@ -7,6 +7,7 @@
 Dapp Boilerplate that gives you maximum flexibility using oper-source packages, a non-binding stack and tools giving you a fully customizable experience bootstraped with minimal configuration.
 
 ### Tech-Stack
+
 - **[Hardhat](https://hardhat.org/):** Development environment for EVM-compatible chains.
 - **[TypeScript](https://www.typescriptlang.org/):** Strongly typed lenguage that builds on JavaScript.
 - **[wagmi](https://wagmi.sh/):** Collection on React Hooks for working with Ethereum.
@@ -15,6 +16,7 @@ Dapp Boilerplate that gives you maximum flexibility using oper-source packages, 
 - **[Next.js](https://nextjs.org/):** The React Framework.
 
 ### Quick start
+
 To get started clone the `evm-starter-kit`:
 
 ```
@@ -39,8 +41,9 @@ pnpm dev
 Now you can interact with the frontend by going to [localhost:3000](https://localhost:3030)
 
 ### Available Scripts
-- `hardhat:generate-abi`: Deploys contracts and exports the `API` & `address` to frontend. 
-- `hardhat:clean`: Cleans the generated `artifacts` `cache` & `typechain-types` generated folders.
+
+- `hardhat:generate-abi`: Deploys contracts and exports the `API` & `address` to frontend.
+- `hardhat:clean`: Cleans the generated `artifacts` `cache` & `typechain` generated folders.
 - `hardhat:deploy`: Deploys your contract to localhost & exports the `ABI` to the frontend.
 - `hardhat:node`: Starts the Hardhat node.
 - `frontend:dev`: Starts the NextJS frontend in development mode.
@@ -50,9 +53,11 @@ Now you can interact with the frontend by going to [localhost:3000](https://loca
 - `dev`: Starts & deploys the hardhat node to the localhost & starts the frontend in development mode.
 
 ### How to customize
+
 For customizing the project, please check the [customizing guide](customize.md).
 
 #### Hardhat
+
 - `contracts/`: This folder contains all of your contracts, it comes with example `Token.sol` to illustrate the experience.
 - `deploys/`: Each file is meant to deploy a contract, you can check the `001_deploy_token.ts` for an example.
 
@@ -69,13 +74,13 @@ const config: HardhatUserConfig = {
   solidity: "0.8.17",
   networks: {
     hardhat: {
-      chainId: 1337 // We set 1337 to make interacting with MetaMask simpler
+      chainId: 1337, // We set 1337 to make interacting with MetaMask simpler
     },
     myOtherEvmNetwork: {
       url: "http://localhost:8545", // your node URL here
       accounts: ["yourPrivateKey"], // your private key here
-      chainId: 1338 // chainId of your network
-    }
+      chainId: 1338, // chainId of your network
+    },
   },
   namedAccounts: {
     deployer: 0,
@@ -93,32 +98,39 @@ After this configuration update, you can deploy your contracts to the specified 
 Remember to replace `"http://localhost:8545"` and `"yourPrivateKey"` with your actual node URL and private key, respectively. This makes Hardhat a powerful and flexible tool for deploying contracts to different EVM-compatible blockchains.
 
 #### Frontend
+
 - `frontend/`: Contains a minimal NextJS application prepared with `wagmi`, `rainbow kit` & `tailwind`
- - You can get started by customizing `frontend/src/pages/index.tsx`
+- You can get started by customizing `frontend/src/pages/index.tsx`
 
 ## ⚡ How to deploy to Fleek
 
 ### 1. Create a `fleek.json` config file:
+
 You can configure this site deployment using [Fleek CLI]() and running:
+
 ```
  > fleek sites init
   WARN! Fleek CLI is in beta phase, use it under your own responsibility
-  ? Choose one of the existing sites or create a new one. › 
+  ? Choose one of the existing sites or create a new one. ›
   ❯ Create a new site
 ```
- It will prompt you for a `name`, `dist` directory location & `build command`
 
- - `name`: How you want to name the site
- - `dist`: The output directory where the site is located, for this template it's `dist`
- - `build command`: Command to build your site, this will be used to deploy the latest version either by CLI or Github Actions
+It will prompt you for a `name`, `dist` directory location & `build command`
+
+- `name`: How you want to name the site
+- `dist`: The output directory where the site is located, for this template it's `dist`
+- `build command`: Command to build your site, this will be used to deploy the latest version either by CLI or Github Actions
 
 ### 2. Deploy the site
+
 After configuiring your `fleek.json` file, you can deployt the site by running
 
 ```
 fleek sites deploy
 ```
+
 After running it you will get an output like this:
+
 ```
  WARN! Fleek CLI is in beta, use it at your own discretion
   > Success! Deployed!
@@ -129,6 +141,7 @@ After running it you will get an output like this:
 ```
 
 ### Extra features
+
 - **Continuous Integration (CI):** `fleek sites ci` [Documentation.](https://docs.fleek.xyz/services/sites/#continuous-integration-ci)
 - **Adding custom domains:** `fleek domains create` [Documentation.](https://docs.fleek.xyz/services/domains/)
 
