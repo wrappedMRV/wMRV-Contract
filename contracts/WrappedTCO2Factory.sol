@@ -3,9 +3,12 @@ pragma solidity 0.8.14;
 
 import "./WrappedTCO2.sol";
 import "./IOracleUrlSource.sol";
-
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/**
+ * @title WrappedTCO2Factory
+ * @dev Factory contract to create WrappedTCO2 tokens and manage Chainlink oracle requests.
+ */
 contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
     address[] public wrappedTCO2Contracts;
     mapping(address => address) public underlyingToWrapped;
@@ -15,12 +18,18 @@ contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
     address public oracle;
     address public link;
 
-    // mapping(uint256 => RequestDetails) public requests;
     RequestDetails[] public requests;
 
     event WrappedTCO2Created(address indexed wrappedTCO2Address);
     event RequestAdded(uint256 indexed id);
 
+    /**
+     * @dev Constructor for WrappedTCO2Factory.
+     * @param _oracle Oracle address for Chainlink requests.
+     * @param _jobId Job ID for Chainlink oracle.
+     * @param _fee Fee for oracle requests.
+     * @param _link LINK token address.
+     */
     constructor(
         address _oracle,
         string memory _jobId,
@@ -33,7 +42,10 @@ contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
         link = _link;
     }
 
-    // Function to create a new WrappedTCO2
+    /**
+     * @dev Creates a new WrappedTCO2 contract.
+     * @param _tco2TokenAddress Address of the underlying Toucan Carbon Offsets token.
+     */
     function createWrappedTCO2(address _tco2TokenAddress) public {
         require(
             underlyingToWrapped[_tco2TokenAddress] == address(0),
@@ -49,10 +61,19 @@ contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
         emit WrappedTCO2Created(address(wrappedTCO2));
     }
 
+    /**
+     * @dev Retrieves the list of WrappedTCO2 contract addresses.
+     * @return An array of WrappedTCO2 contract addresses.
+     */
     function getWrappedTCO2Contracts() public view returns (address[] memory) {
         return wrappedTCO2Contracts;
     }
 
+    /**
+     * @dev Adds a new Chainlink oracle request configuration.
+     * @param url The URL for the oracle request.
+     * @param path The JSON path for the data point in the API response.
+     */
     function addRequest(
         string memory url,
         string memory path
@@ -61,7 +82,11 @@ contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
         emit RequestAdded(requests.length - 1);
     }
 
-    // Function to retrieve request details
+    /**
+     * @dev Retrieves details of a specific Chainlink oracle request configuration.
+     * @param id The ID of the request configuration.
+     * @return The request details, including URL and JSON path.
+     */
     function getRequestDetails(
         uint256 id
     ) public view returns (RequestDetails memory) {
@@ -69,6 +94,11 @@ contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
         return requests[id];
     }
 
+    /**
+     * @dev Converts a string to bytes32.
+     * @param source The string to convert.
+     * @return result The resulting bytes32 value.
+     */
     function stringToBytes32(
         string memory source
     ) public pure returns (bytes32 result) {

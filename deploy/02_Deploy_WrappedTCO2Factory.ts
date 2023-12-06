@@ -23,18 +23,20 @@ const func: DeployFunction = async function ({
     oracleAddress = networkConfig[chainId].oracle as string;
   }
   const { jobId, fee } = networkConfig[chainId];
+  const jobIdString =  "7d80a6386ef543a3abb52817f6707e3b"
 
   await deploy("WrappedTCO2Factory", {
     from: deployer,
-    args: [oracleAddress, jobId, fee, linkTokenAddress],
+    args: [oracleAddress, jobIdString, fee, linkTokenAddress],
     log: true,
   });
+  
   if (chainId !== "1337") {
     console.log("Verify WrappedTCO2Factory contract");
     console.log(
       `npx hardhat verify --network ${networkConfig[chainId].name} ${
         (await get("WrappedTCO2Factory")).address
-      } ${oracleAddress} ${jobId} ${fee} ${linkTokenAddress}`
+      } ${oracleAddress} ${jobIdString} ${fee} ${linkTokenAddress}`
     );
   }
 };

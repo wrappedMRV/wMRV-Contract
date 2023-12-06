@@ -24,7 +24,7 @@ task("request-data", "Request data from the oracle")
       if (!fee) return;
 
       const linkTokenContract = await LinkToken.attach(linkTokenAddress);
-
+      await linkTokenContract.transfer(wtco2Address, fee);
       const balance = await linkTokenContract.balanceOf(wtco2Address);
       console.log(
         `LINK balance of sender ${

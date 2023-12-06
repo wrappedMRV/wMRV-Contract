@@ -2,27 +2,29 @@
 pragma solidity 0.8.14;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 
 import "./IToucanCarbonOffsets.sol";
+import "./IToucanCarbonOffsetsBase.sol";
 import "./IOracleUrlSource.sol";
 
-interface IToucanCarbonOffsetsBase is IToucanCarbonOffsets, IERC20 {
-    function getGlobalProjectVintageIdentifiers()
-        external
-        view
-        returns (string memory, string memory);
-}
-
+/**
+ * @title WrappedTCO2
+ * @dev Tokenizes carbon offsets from the Toucan protocol with Chainlink oracle integration for additional data retrieval.
+ */
 contract WrappedTCO2 is ERC20, ChainlinkClient {
     using Chainlink for Chainlink.Request;
     IOracleUrlSource public oracleUrlSource;
     IToucanCarbonOffsetsBase public tco2Token;
     mapping(bytes32 => uint256) private requestIdToId;
+    mapping(uint256 => string) public projectRatings;
 
-    mapping(uint256 => uint256) public projectRatings;
-
+    /**
+     * @dev Sets up the Wrapped TCO2 token.
+     * @param _tco2TokenAddress Address of the underlying Toucan Carbon Offsets token.
+     * @param _link Address of the LINK token.
+     * @param _dataSource Address of the oracle data source.
+     */
     constructor(
         address _tco2TokenAddress,
         address _link,
@@ -34,15 +36,10 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         )
     {
         tco2Token = IToucanCarbonOffsetsBase(_tco2TokenAddress);
-
-        if (_link == address(0)) {
-            setPublicChainlinkToken();
-        } else {
-            setChainlinkToken(_link);
-        }
-
+        setChainlinkToken(_link);
         oracleUrlSource = IOracleUrlSource(_dataSource);
     }
+
 
     function generateTokenName(
         address _tco2TokenAddress
@@ -69,6 +66,10 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         return string(abi.encodePacked("wTCO2-", globalProjectId));
     }
 
+    /**
+     * @dev Wraps TCO2 tokens into wrapped tokens.
+     * @param amount The amount of TCO2 tokens to wrap.
+     */
     function wrap(uint256 amount) public {
         require(
             tco2Token.transferFrom(msg.sender, address(this), amount),
@@ -77,6 +78,10 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         _mint(msg.sender, amount);
     }
 
+    /**
+     * @dev Unwraps wrapped tokens back into TCO2 tokens.
+     * @param amount The amount of wrapped tokens to unwrap.
+     */
     function unwrap(uint256 amount) public {
         require(balanceOf(msg.sender) >= amount, "Insufficient balance");
         _burn(msg.sender, amount);
@@ -84,20 +89,11 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
     }
 
     /**
-     * Create a Chainlink request to retrieve API response, find the target
-     * data.
+     * @dev Requests data from a Chainlink oracle.
+     * @param id The ID associated with the oracle request.
+     * @return requestId The Chainlink request ID.
      */
     function requestData(uint256 id) public returns (bytes32 requestId) {
-        //Should the user pay?
-        // require(
-        //     IERC20(chainlinkTokenAddress()).transferFrom(
-        //         msg.sender,
-        //         address(this),
-        //         fee
-        //     ),
-        //     "Unable to transfer LINK"
-        // );
-
         Chainlink.Request memory request = buildChainlinkRequest(
             oracleUrlSource.jobId(),
             address(this),
@@ -108,8 +104,6 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
             .getRequestDetails(id);
         request.add("get", requestDetails.url);
         request.add("path", requestDetails.path);
-
-        // Sends the request
         requestId = sendChainlinkRequestTo(
             oracleUrlSource.oracle(),
             request,
@@ -120,13 +114,36 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         return requestId;
     }
 
+    /**
+     * @dev Requests data from a Chainlink oracle and transfers LINK token as payment.
+     * @param id The ID associated with the oracle request.
+     * @return requestId The Chainlink request ID.
+     */
+    function requestDataAndPayLink(
+        uint256 id
+    ) external returns (bytes32 requestId) {
+        require(
+            IERC20(chainlinkTokenAddress()).transferFrom(
+                msg.sender,
+                address(this),
+                oracleUrlSource.fee()
+            ),
+            "Unable to transfer LINK"
+        );
+        return requestData(id);
+    }
+
+    /**
+     * @dev Callback function for Chainlink oracle responses.
+     * @param _requestId The Chainlink request ID.
+     * @param _data The data returned from the Chainlink oracle.
+     */
     function fulfill(
         bytes32 _requestId,
-        uint256 _data
+        string memory _data
     ) public recordChainlinkFulfillment(_requestId) {
         uint256 id = requestIdToId[_requestId];
         projectRatings[id] = _data;
-
         delete requestIdToId[_requestId];
     }
 
