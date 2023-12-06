@@ -61,6 +61,12 @@ contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
         emit WrappedTCO2Created(address(wrappedTCO2));
     }
 
+    /**
+     * @dev Creates WrappedTCO2 contracts for multiple Toucan Carbon Offsets tokens.
+     * @param _tco2TokensAddress Array of addresses of the underlying Toucan Carbon Offsets tokens.
+     * This function iterates over an array of TCO2 token addresses and
+     * creates a WrappedTCO2 contract for each one using the createWrappedTCO2 function.
+     */
     function createWrappedTCO2s(address[] memory _tco2TokensAddress) public {
         for (uint256 i = 0; i < _tco2TokensAddress.length; i++) {
             createWrappedTCO2(_tco2TokensAddress[i]);
