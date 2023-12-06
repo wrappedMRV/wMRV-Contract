@@ -40,7 +40,6 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
         oracleUrlSource = IOracleUrlSource(_dataSource);
     }
 
-
     function generateTokenName(
         address _tco2TokenAddress
     ) private view returns (string memory) {
@@ -102,8 +101,15 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
 
         IOracleUrlSource.RequestDetails memory requestDetails = oracleUrlSource
             .getRequestDetails(id);
-        request.add("get", requestDetails.url);
+
+        (string memory globalProjectId, ) = tco2Token
+            .getGlobalProjectVintageIdentifiers();
+        request.add(
+            "get",
+            string(abi.encodePacked(requestDetails.url, "VCS-766"))
+        );
         request.add("path", requestDetails.path);
+
         requestId = sendChainlinkRequestTo(
             oracleUrlSource.oracle(),
             request,
