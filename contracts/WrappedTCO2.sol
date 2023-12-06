@@ -106,7 +106,7 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
             .getGlobalProjectVintageIdentifiers();
         request.add(
             "get",
-            string(abi.encodePacked(requestDetails.url, "VCS-766"))
+            string(abi.encodePacked(requestDetails.url, globalProjectId))
         );
         request.add("path", requestDetails.path);
 

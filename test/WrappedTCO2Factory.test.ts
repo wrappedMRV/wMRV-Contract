@@ -80,4 +80,33 @@ describe("WrappedTCO2Factory contract", function () {
       ).to.be.revertedWith("WrappedTCO2 already exists");
     });
   });
+
+  describe("Creating multiple WrappedTCO2", function () {
+    it("Should create a new WrappedTCO2 contract", async function () {
+      const tco2TokenAddress = toucanCarbonOffsetsMock.address;
+      const txResponse = await wrappedTCO2Factory.createWrappedTCO2s(
+        [tco2TokenAddress]
+      );
+      const txReceipt = await txResponse.wait();
+      const event = txReceipt.events?.find(
+        (event) => event.event === "WrappedTCO2Created"
+      );
+      const newWrappedTCO2Address = event?.args?.wrappedTCO2Address;
+
+      expect(newWrappedTCO2Address).to.be.properAddress;
+      expect(await wrappedTCO2Factory.getWrappedTCO2Contracts()).to.include(
+        newWrappedTCO2Address
+      );
+    });
+
+    it("Should not allow creating a WrappedTCO2 with the same TCO2 token address", async function () {
+      const tco2TokenAddress = toucanCarbonOffsetsMock.address;
+
+      await wrappedTCO2Factory.createWrappedTCO2s([tco2TokenAddress]);
+      await expect(
+        wrappedTCO2Factory.createWrappedTCO2s([tco2TokenAddress])
+      ).to.be.revertedWith("WrappedTCO2 already exists");
+    });
+  });
+  
 });

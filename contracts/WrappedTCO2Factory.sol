@@ -61,6 +61,12 @@ contract WrappedTCO2Factory is Ownable, IOracleUrlSource {
         emit WrappedTCO2Created(address(wrappedTCO2));
     }
 
+    function createWrappedTCO2s(address[] memory _tco2TokensAddress) public {
+        for (uint256 i = 0; i < _tco2TokensAddress.length; i++) {
+            createWrappedTCO2(_tco2TokensAddress[i]);
+        }
+    }
+
     /**
      * @dev Retrieves the list of WrappedTCO2 contract addresses.
      * @return An array of WrappedTCO2 contract addresses.
