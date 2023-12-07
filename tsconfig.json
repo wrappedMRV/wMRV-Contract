@@ -8,9 +8,5 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist"
   },
-  "include": [
-    "hardhat.config.ts",
-    "./deploy",
-    "./test"
-  ]
+  "include": ["hardhat.config.ts", "./deploy", "./test"]
 }
