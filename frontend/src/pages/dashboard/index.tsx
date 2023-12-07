@@ -1,9 +1,9 @@
-
+"use client"
 import React from 'react';
 import Header from '../../components/Header';
 import ImageComponent from '../../components/ImageComponent'
 import CarbonAssetCard from '@/components/CarbonAssetCard';
-
+import { useEffect, useState } from 'react';
 interface StatisticProps {
   title: string;
   value: string;
@@ -40,7 +40,31 @@ const Card: React.FC = () => (
 );
 
 
-const Dashboard: React.FC = () => (
+const Dashboard: React.FC = () => {
+  const [data, setData] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('/api/bezero');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const json = await response.json();
+                setData(json);
+            } catch (err: any) {
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+     console.log(JSON.stringify(data, null, 2))
+  return (
   <div className="bg-zinc-900 flex flex-col items-center">
     <div className="flex bg-zinc-800 w-full flex-col m-20 p-5 items-start">
       <Header title="My Carbon Asset" className="text-lg leading-7 mt-20 p-5" />
@@ -83,6 +107,7 @@ const Dashboard: React.FC = () => (
       </div>
     </div>
   </div>
-);
+  )
+};
 
 export default Dashboard;
