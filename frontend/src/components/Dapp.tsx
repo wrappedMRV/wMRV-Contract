@@ -49,11 +49,7 @@ export default function Dapp() {
     <Hero/>
       <div className="items-center bg-zinc-800 z-[1] flex w-full flex-col justify-center px-16 py-11 max-md:max-w-full max-md:px-5">
         <div className="flex w-[1050px] max-w-full flex-col mb-8">
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/89e596cfc744bee7202e628d3b1d8bec9cf0bbf697158603115fb02410ff8246?"
-            className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden max-w-full ml-12 self-start max-md:ml-2.5"
-          />
+          
           <div className="text-white text-4xl font-semibold leading-10 capitalize self-stretch mt-5 max-md:max-w-full">
             How it works
           </div>
