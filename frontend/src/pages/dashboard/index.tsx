@@ -1,14 +1,18 @@
 "use client"
 import React from 'react';
-import Header from '../../components/Header';
-import ImageComponent from '../../components/ImageComponent'
+import Header from '@/components/Header';
+import ImageComponent from '@/components/ImageComponent'
 import CarbonAssetCard from '@/components/CarbonAssetCard';
 import { useEffect, useState } from 'react';
+import SelectElem  from '@/components/SelectElem'
+import { SelectElemProps } from '@/components/SelectElem';
+
 interface StatisticProps {
   title: string;
   value: string;
   prefix?: string;
 }
+
 
 // StatisticRow component displays a row of statistics along with a "View" button
 const StatisticRow: React.FC = () => (
@@ -20,7 +24,48 @@ const StatisticRow: React.FC = () => (
     <button className="text-teal-500">View</button>
   </div>
 );
-
+const cardData =  [
+  {
+    "id": 1,
+    "afforestation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "rally": "Phasellus vitae purus lectus, sit amet rutrum nunc.",
+    "ratingMethodology": "Sed ac orci ac lectus convallis fringilla.",
+    "wrap": "Nulla facilisi. Maecenas lobortis tellus eget nisi vestibulum fermentum.",
+    "redis": "Morbi et nibh non diam mollis scelerisque vitae ac mi."
+  },
+  {
+    "id": 2,
+    "afforestation": "Donec rutrum magna in est vestibulum, vel lacinia felis elementum.",
+    "rally": "Fusce vitae nulla in quam consectetur eleifend.",
+    "ratingMethodology": "In hac habitasse platea dictumst. Morbi nec orci ornare, eleifend orci vitae, bibendum massa.",
+    "wrap": "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec quam felis, tristique sed aliquam ut, eleifend ut augue.",
+    "redis": "Vivamus fermentum tortor eu lacus tristique, sit amet malesuada felis ultrices."
+  },
+  {
+    "id": 3,
+    "afforestation": "Vivamus sit amet massa a quam pretium sodales. Cras ut lorem a tellus iaculis porta.",
+    "rally": "Cras ac orci quis felis tincidunt ultricies.",
+    "ratingMethodology": "Sed ac nulla in arcu sodales blandit. Phasellus non laoreet enim.",
+    "wrap": "Proin nec diam vel magna consectetur luctus.",
+    "redis": "Maecenas velit tellus, tincidunt eu mauris at, porta ultrices enim."
+  },
+  {
+    "id": 4,
+    "afforestation": "Suspendisse potenti risus, tincidunt at ultricies vitae, malesuada a leo.",
+    "rally": "Pellentesque a nisl quis elit venenatis pulvinar.",
+    "ratingMethodology": "Integer et quam at sapien ultrices posuere at et turpis.",
+    "wrap": "Nulla facilisi. Proin laoreet libero sit amet nulla pretium, ac faucibus lectus gravida.",
+    "redis": "Nullam aliquet, sem sit amet facilisis accumsan, orci nisl feugiat purus, eu tincidunt ligula ligula ut lacus."
+  },
+  {
+    "id": 5,
+    "afforestation": "Nunc viverra elit sed velit mattis, at accumsan eros hendrerit. Fusce in ante vitae quam pulvinar fermentum.",
+    "rally": "Nunc euismod, magna eget aliquam scelerisque, dui orci blandit erat, id ultricies ipsum turpis ac mauris.",
+    "ratingMethodology": "Donec sit amet dolor lacinia, tincidunt arcu eu, mattis nulla.",
+    "wrap": "Nulla a ligula quis nisi congue posuere.",
+    "redis": "Nullam sit amet leo in nibh ornare tristique eget nec augue."
+  }
+] ;
 // Card component wraps the StatisticRow and adds a "View All" button at the bottom
 const Card: React.FC = () => (
   <div className="bg-neutral-900 p-6 rounded-xl w-full  mx-auto">
@@ -67,6 +112,7 @@ const Dashboard: React.FC = () => {
   return (
   <div className="bg-zinc-900 flex flex-col items-center">
     <div className="flex bg-zinc-800 w-full flex-col m-20 p-5 items-start">
+   
       <Header title="My Carbon Asset" className="text-lg leading-7 mt-20 p-5" />
         <CarbonAssetCard />
       <Header title="Carbon dETFs Liquidity Positions" className="text-lg leading-7 mt-20 p-5" />

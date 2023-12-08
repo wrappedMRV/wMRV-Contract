@@ -1,3 +1,5 @@
+import SelectElem from "./SelectElem";
+
 const ChainInfo: React.FC<{ chainName: string; tokenCount: string }> = ({ chainName, tokenCount }) => (
     <div className="flex items-center mb-4">
       <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/92506c386274628b1d4bcf22e27eb7c3397b753eb30ecd9a8bda0109eb1d0b37?apiKey=e3802405984e420cb725bf0a04130d05&" alt="Chain logo" className="w-8 h-8 mr-2" /> {/* Replace with actual logo URL */}
@@ -42,6 +44,7 @@ const ChainInfo: React.FC<{ chainName: string; tokenCount: string }> = ({ chainN
 <div className="flex justify-center">
 <button className="text-teal-500 mt-4">View All</button>
 </div>
+<SelectElem data={[]} bgColor='' projectName='' rating= '' ratingMethodology='' buttons={[]} />
     </div>
   );
   
