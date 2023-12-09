@@ -4,7 +4,7 @@ import { networkConfig } from "../helper-hardhat-config";
 
 import { ethers } from "hardhat";
 import { WrappedTCO2Factory } from "../typechain/contracts/WrappedTCO2Factory";
-import { WrappedTCO2 } from "../typechain/contracts/WrappedTCO2.sol";
+import { WrappedTCO2 } from "../typechain/contracts/WrappedTCO2";
 import { ERC20 } from "../typechain/@openzeppelin/contracts/token/ERC20/ERC20";
 const WrappedTCO2Artifact = require("../artifacts/contracts/WrappedTCO2.sol/WrappedTCO2.json");
 const func: DeployFunction = async function ({

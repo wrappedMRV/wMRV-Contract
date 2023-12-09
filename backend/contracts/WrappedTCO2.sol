@@ -104,7 +104,6 @@ contract WrappedTCO2 is ERC20, ChainlinkClient {
 
         (string memory globalProjectId, ) = tco2Token
             .getGlobalProjectVintageIdentifiers();
-            
         request.add(
             "get",
             string(abi.encodePacked(requestDetails.url, globalProjectId))
