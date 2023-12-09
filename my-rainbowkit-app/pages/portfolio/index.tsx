@@ -8,7 +8,7 @@ function Portfolio() {
       <div className="bg-gray-800 self-center flex w-full max-w-[1520px] flex-col items-center mt-6 pt-12 px-16 max-md:max-w-full max-md:px-5">
         <img
           loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/9ec473b914727dff799efc3f3361fac46c0aa45733c321b1b51cf4c59ccbe6b5?"
+          src="https://cdn.builder.io/api/v1/image/assets/TEMP/e7a3381e449a6c9fe01b69d54bda9f707571f667f9de1bd1232fd795e44b305d?apiKey=e3802405984e420cb725bf0a04130d05&"
           className="aspect-square object-contain object-center w-[135px] overflow-hidden z-[1] mb-0 max-w-full mt-80 max-md:mt-10 max-md:mb-2.5"
         />
       </div>
