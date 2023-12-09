@@ -1,18 +1,19 @@
 "use client"
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomHeader from '@/../../components/CustomHeader';
 import ImageComponent from '@/../../components/ImageComponent';
 import CarbonAssetCard from '@/../../components/CarbonAssetCard';
-import { useEffect, useState } from 'react';
 import SelectElem  from '@/../../components/SelectElem';
 import { SelectElemProps } from '@/../../components/SelectElem';
-
+import  ethers  from 'ethers';
+import { wrappedTCO02Abi } from '../../constants/WrappedTCO2';
+import * as dotenvenc from '@chainlink/env-enc'
 interface StatisticProps {
   title: string;
   value: string;
   prefix?: string;
 }
-
+const ALCHEMY_RPC_URL = process.env.ALCHEMY_RPC_URL || ''
 
 // StatisticRow component displays a row of statistics along with a "View" button
 const StatisticRow: React.FC = () => {
@@ -92,7 +93,30 @@ const Dashboard: React.FC = () => {
   const [data, setData] = useState<any>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-
+    const [attributes, setAttributes] = useState(null);
+  
+    useEffect(() => {
+      const fetchAttributes = async () => {
+        try {
+          // Set up ethers.js provider and contract instance
+          const provider = new ethers.JsonRpcProvider(ALCHEMY_RPC_URL);
+          const contractAddress = '0x8d6F1F8be5c87Cea93d3277Ee95f3342F1512ea1';
+          const contractABI = wrappedTCO02Abi;
+          const contract = new ethers.Contract(contractAddress, contractABI, provider);
+  
+          // Fetch attributes
+          const data = await contract.getAttributes();
+          console.log(data);
+          setAttributes(data);
+        } catch (error) {
+          console.error('Error fetching attributes:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+  
+      fetchAttributes();
+    }, []);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -115,9 +139,13 @@ const Dashboard: React.FC = () => {
   return (
   <div className="bg-[#181B21] flex flex-col items-center">
     <div className="flex bg-[#181B21] w-full flex-col m-20 p-5 items-start">
+      <div className="flex flex-col w-full ">
+<div className="mx-auto py-10 ">
 
-      <CustomHeader title="My Carbon Asset" className="text-lg leading-7 mt-20 p-5" />
+      <CustomHeader title="My Carbon Asset" className="text-lg leading-7 mt-20" />
+</div>
         <CarbonAssetCard />
+      </div>
       <CustomHeader title="Carbon dETFs Liquidity Positions" className="text-lg leading-7 mt-20 p-5" />
       {/* Pool Token Details */}
        <Card />

@@ -1,53 +1,54 @@
 import Image from "next/image";
-import {  ApolloClient, InMemoryCache, useQuery, gql } from '@apollo/client';
+import { ApolloClient, InMemoryCache, useQuery, gql } from "@apollo/client";
 
-
-  
-
-const GET_PROJECT_DATA = gql `
-query GetProjectData{
-  projects {
-    projectId
-    standard
-    methodology
-    region
-    storageMethod
-    method
-    emissionType
-    category
-    uri
-    beneficiary
+const GET_PROJECT_DATA = gql`
+  query GetProjectData {
+    projects {
+      projectId
+      standard
+      methodology
+      region
+      storageMethod
+      method
+      emissionType
+      category
+      uri
+      beneficiary
+    }
+    vintages {
+      name
+      startTime
+      endTime
+      projectTokenId
+      totalVintageQuantity
+      isCorsiaCompliant
+      isCCPcompliant
+      coBenefits
+      correspAdjustment
+      additionalCertification
+      uri
+    }
   }
-  vintages {
-    name
-    startTime
-    endTime
-    projectTokenId
-    totalVintageQuantity
-    isCorsiaCompliant
-    isCCPcompliant
-    coBenefits
-    correspAdjustment
-    additionalCertification
-    uri
-  }
-}`
+`;
 function Portfolio() {
   const { loading, error, data } = useQuery(GET_PROJECT_DATA);
-  console.log(data)
+  console.log(data);
   return (
-
     <div className="bg-[#181B21] flex flex-col pb-12">
-   
       <div className="bg-gray-800 self-center flex w-full max-w-[1520px] flex-col items-center mt-6 pt-12 px-16 max-md:max-w-full max-md:px-5">
-      <Image
-      priority
-      src={"/bg.svg"}
-      alt="Follow us on Twitter"
-      width={1000}
-      height={100}
-      style={{ height: "100%", width: "100%" , objectFit: "cover", objectPosition: "center"}}
-    />
+        <Image
+          priority
+          src={"/bg.svg"}
+          alt="Follow us on Twitter"
+          width={1000}
+          height={100}
+          style={{
+            height: "100%",
+            width: "100%",
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
+        />
       </div>
       <div className="text-white text-4xl font-bold leading-10 self-center whitespace-nowrap mt-24 max-md:mt-10">
         Toucans
@@ -318,9 +319,5 @@ function Portfolio() {
     </div>
   );
 }
-
-
-
-
 
 export default Portfolio;
