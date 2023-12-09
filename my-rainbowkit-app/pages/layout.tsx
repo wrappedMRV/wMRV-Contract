@@ -5,8 +5,8 @@ import './globals.css'
 import dynamic from 'next/dynamic';
 const inter = Inter({ subsets: ['latin'] })
 
-const Navbar = dynamic(() => import('@/../../components/NavBar'), { ssr: false }); // Adjust the import path as needed
-const Footer = dynamic(() => import('@/../../components/Footer'), { ssr: false }); // Adjust the import path as needed
+const Navbar = dynamic(() => import('@/../../components/NavBar'), { ssr: false });
+const Footer = dynamic(() => import('@/../../components/Footer'), { ssr: false }); 
 
 export const metadata: Metadata = {
   title: 'Create Next App',
