@@ -6,21 +6,15 @@ import type { AppProps } from 'next/app';
 import { ToastContainer } from 'react-toastify';
 
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import {
-  arbitrum,
-  goerli,
-  mainnet,
-  optimism,
-  polygon,
-  base,
-  zora,
-} from 'wagmi/chains';
+import { polygonMumbai } from 'wagmi/chains';
+
 import { publicProvider } from 'wagmi/providers/public';
 import Layout from '../components/layout';
 import { ApolloProvider, InMemoryCache, ApolloClient} from '@apollo/client';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
+<<<<<<< HEAD
     mainnet,
     polygon,
     optimism,
@@ -29,6 +23,10 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     zora,
     
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [goerli] : []),
+=======
+    polygonMumbai,
+    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [polygonMumbai] : []),
+>>>>>>> 5c3a0ca88f909e832a35df602f65654706c42abf
   ],
   [publicProvider()]
 );
