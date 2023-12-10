@@ -19,7 +19,6 @@ struct VintageData {
     string correspAdjustment;
     string additionalCertification;
     string uri;
-    string registry;
 }
 /// @dev CarbonProject related data and attributes
 struct ProjectData {
