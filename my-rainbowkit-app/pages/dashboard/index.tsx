@@ -5,15 +5,22 @@ import ImageComponent from "@/../../components/ImageComponent";
 import CarbonAssetCard from "@/../../components/CarbonAssetCard";
 import SelectElem from "@/../../components/SelectElem";
 import { SelectElemProps } from "@/../../components/SelectElem";
-import ethers from "ethers";
-import { wrappedTCO02Abi } from "../../constants/WrappedTCO2";
-import * as dotenvenc from "@chainlink/env-enc";
+import {ethers} from "ethers";
+import { wrappedTCO02Abi } from "@/../../constants/WrappedTCO2";
+import dotenv from "dotenv";
+dotenv.config()
 interface StatisticProps {
   title: string;
   value: string;
   prefix?: string;
 }
-const ALCHEMY_RPC_URL = process.env.ALCHEMY_RPC_URL || "";
+
+interface ProjectData {
+  projectId: string;
+  details: any;  
+  image: any;    
+}
+const ALCHEMY_RPC_URL = process.env.NEXT_PUBLIC_ETHERUM_GOERLI_RPC_URL || "";
 
 // StatisticRow component displays a row of statistics along with a "View" button
 const StatisticRow: React.FC = () => {
@@ -104,6 +111,7 @@ const Dashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [attributes, setAttributes] = useState(null);
+  const [projects, setProjects] = useState<ProjectData[]>([]);
 
   useEffect(() => {
     const fetchAttributes = async () => {
@@ -131,24 +139,34 @@ const Dashboard: React.FC = () => {
 
     fetchAttributes();
   }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/bezero");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const json = await response.json();
-        setData(json);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
 
-    fetchData();
+  useEffect(() => {
+    const projectIds = ["VCS-439", "VCS-674"]; // Array of project IDs
+    const fetchedProjects:ProjectData[] = [];
+  
+    const fetchProjectDataSequentially = async () => {
+      for (const projectId of projectIds) {
+        try {
+          // Fetch project details and image sequentially
+          const response = await fetch(`/api/bezero?projectId=${projectId}`);
+          if (!response.ok) {
+            throw new Error(`Error fetching data for project ${projectId}`);
+          }
+          const projectData = await response.json();
+          fetchedProjects.push(projectData);
+        } catch (err) {
+          console.error(`Error fetching data for project ${projectId}:`, err);
+          // Handle error or add partial data
+        }
+      }
+  
+      setProjects(fetchedProjects);
+      setIsLoading(false);
+    };
+  
+    fetchProjectDataSequentially();
   }, []);
+  
   console.log(JSON.stringify(data, null, 2));
   return (
     <div className="bg-[#181B21] flex flex-col items-center">

@@ -75,8 +75,6 @@ export default function Dapp() {
                 text="Choose between auctions and fixed-price listings. Start
                 earning by selling your NFTs or trading others."
               />
-             
-          
               </div>
             </div>
           </div>

@@ -1,6 +1,15 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+
 import Image from "next/image";
 import { ApolloClient, InMemoryCache, useQuery, gql } from "@apollo/client";
 import PortfolioCard from "../../components/PortfolioCard";
+import { wrappedTCO02Abi } from "../../constants/WrappedTCO2";
+import {ethers } from "ethers";
+
+import dotenv from "dotenv";
+dotenv.config()
 const GET_PROJECT_DATA = gql`
   query GetProjectData {
     projects {
@@ -30,9 +39,75 @@ const GET_PROJECT_DATA = gql`
     }
   }
 `;
+interface ProjectData {
+  projectId: string;
+  details: any;  
+  image: any;    
+}
+const ALCHEMY_RPC_URL = process.env.NEXT_PUBLIC_ETHERUM_GOERLI_RPC_URL || "";
+
 function Portfolio() {
-  const { loading, error, data } = useQuery(GET_PROJECT_DATA);
-  console.log(data);
+  // const { loading, error, data } = useQuery(GET_PROJECT_DATA);
+  // console.log(data);
+  const [data, setData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [projectData, setProjectData] = useState(null);
+  const [projectImage, setProjectImage] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [projects, setProjects] = useState<ProjectData[]>([]);
+  const [attributes, setAttributes] = useState(null);
+  const contractAddress = "0x8d6F1F8be5c87Cea93d3277Ee95f3342F1512ea1";
+
+ 
+  useEffect(() => {
+    const fetchAttributes = async () => {
+      try {
+        const provider = new ethers.JsonRpcProvider(ALCHEMY_RPC_URL);
+        const contract = new ethers.Contract(contractAddress, wrappedTCO02Abi, provider);
+  
+        const data = await contract.getAttributes();
+        console.log('attr data', data);
+        setAttributes(data);
+      } catch (error) {
+        console.error("Error fetching attributes:", error);
+        // Additional error handling as needed
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchAttributes();
+  }, []);
+  
+  useEffect(() => {
+    const projectIds = ["VCS-439", "VCS-674"]; // Array of project IDs
+    const fetchedProjects:ProjectData[] = [];
+  
+    const fetchProjectDataSequentially = async () => {
+      for (const projectId of projectIds) {
+        try {
+          // Fetch project details and image sequentially
+          const response = await fetch(`/api/bezero?projectId=${projectId}`);
+          if (!response.ok) {
+            throw new Error(`Error fetching data for project ${projectId}`);
+          }
+          const projectData = await response.json();
+          fetchedProjects.push(projectData);
+        } catch (err) {
+          console.error(`Error fetching data for project ${projectId}:`, err);
+          // Handle error or add partial data
+        }
+      }
+  
+      setProjects(fetchedProjects);
+      setIsLoading(false);
+    };
+  
+    fetchProjectDataSequentially();
+  }, []);
+  
+  
+  console.log(JSON.stringify(projects, null, 2));
   return (
     <div className="bg-[#181B21] flex flex-col pb-12">
       <div className="bg-gray-800 self-center flex w-full max-w-[1520px] flex-col items-center mt-6 pt-12 px-16 max-md:max-w-full max-md:px-5">
