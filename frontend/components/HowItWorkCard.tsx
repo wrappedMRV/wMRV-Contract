@@ -13,14 +13,14 @@ const HowItWorkCard: React.FC<HowItWorkCardProps> = ({
 }) => {
   return (
     <div className="md:max-w-full rounded-xl overflow-hidden shadow-lg text-center p-6 bg-neutral-700 m-4">
-      <div className="rounded-full mb-4 overflow-hidden w-auto h-auto p-2">
+      <div className="rounded-full mb-4 overflow-hidden p-2">
         <Image
           src={imageUrl}
           alt={title}
           height={100}
           width={100}
           className="w-full h-full"
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: "cover" ,height: "250px", width: "250px" }}
         />
       </div>
       <h2 className="text-lg text-white font-bold mb-2">{title}</h2>
