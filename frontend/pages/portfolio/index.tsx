@@ -56,7 +56,7 @@ function Portfolio() {
   const [error, setError] = useState<string | null>(null);
   const [projects, setProjects] = useState<ProjectData[]>([]);
   const [attributes, setAttributes] = useState(null);
-  const contractAddress = "0x8d6F1F8be5c87Cea93d3277Ee95f3342F1512ea1";
+  const contractAddress = "0xd81cFfa66914174F7E4824fA226caB73eEBA12AD";
 
  
   useEffect(() => {
