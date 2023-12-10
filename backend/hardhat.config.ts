@@ -89,7 +89,6 @@ const config: HardhatUserConfig = {
       chainId: 80001,
       url: `https://polygon-mumbai.infura.io/v3/${INFURA_KEY}`,
       accounts: [DEPLOYER_PRIVATE_KEY],
-
       saveDeployments: true,
       loggingEnabled: true,
     },

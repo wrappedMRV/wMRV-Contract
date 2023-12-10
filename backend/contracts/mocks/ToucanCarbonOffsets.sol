@@ -51,8 +51,7 @@ contract ToucanCarbonOffsets is IToucanCarbonOffsets, ERC20 {
             coBenefits: "",
             correspAdjustment: "",
             additionalCertification: "",
-            uri: "",
-            registry: ""
+            uri: ""
         });
         ProjectData memory projectData = ProjectData({
             projectId: "",
