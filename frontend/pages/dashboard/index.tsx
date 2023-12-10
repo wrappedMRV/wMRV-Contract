@@ -20,7 +20,7 @@ interface ProjectData {
   details: any;  
   image: any;    
 }
-const ALCHEMY_RPC_URL = process.env.NEXT_PUBLIC_ETHERUM_GOERLI_RPC_URL || "";
+const ALCHEMY_RPC_URL = process.env.NEXT_PUBLIC_POLYGON_MUMBAI_RPC_URL || "";
 
 // StatisticRow component displays a row of statistics along with a "View" button
 const StatisticRow: React.FC = () => {

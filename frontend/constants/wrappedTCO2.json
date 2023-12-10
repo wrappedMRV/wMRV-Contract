@@ -366,11 +366,6 @@
             "internalType": "string",
             "name": "uri",
             "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "registry",
-            "type": "string"
           }
         ],
         "internalType": "struct VintageData",

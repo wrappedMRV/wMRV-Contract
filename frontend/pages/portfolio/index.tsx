@@ -6,9 +6,10 @@ import Image from "next/image";
 import { ApolloClient, InMemoryCache, useQuery, gql } from "@apollo/client";
 import PortfolioCard from "../../components/PortfolioCard";
 import { wrappedTCO02Abi } from "../../constants/WrappedTCO2";
-import {ethers } from "ethers";
-
+import {Wallet, ethers } from "ethers";
+import { uniqueProjectIds }from "../../utils/projectId";
 import dotenv from "dotenv";
+import WalletAddressButton from "../../components/WalletAddressButton";
 dotenv.config()
 const GET_PROJECT_DATA = gql`
   query GetProjectData {
@@ -41,24 +42,66 @@ const GET_PROJECT_DATA = gql`
 `;
 interface ProjectData {
   projectId: string;
+  tco2Address: string;
   details: any;  
+  projectName: string;
   image: any;    
 }
-const ALCHEMY_RPC_URL = process.env.NEXT_PUBLIC_POLYGON_MUMBAI_RPC_URL || "";
+interface ProjectApiResponse {
+  details: ProjectData[];
+  image: { projectId: string; url: string };
+}
+interface ProjectDetails {
+  projectId: string;
+  projectName: string;
+  projectType: string;
+  verraLink: string;
+  polygonLink: string;
+  beZeroRating: string;
+  tco2Address: string;
+  quantity: number;
+  vintage: number;
+  country: string;
+  methodology: string;
+}
 
-function Portfolio() {
+interface ProjectImage {
+  projectId: string;
+  url: string;
+}
+
+interface PortfolioData {
+  details: ProjectDetails[];
+  image: ProjectImage;
+}
+
+
+interface PortfolioCardProps {
+  detail: ProjectDetails;
+  image: string;
+}
+
+interface Error {
+  message: string;
+}
+
+const ALCHEMY_RPC_URL = process.env.NEXT_PUBLIC_POLYGON_MUMBAI_RPC_URL || "";
+const ITEMS_PER_PAGE = 30; // Set the number of items you want per page
+
+const Portfolio: React.FC = () => {
   // const { loading, error, data } = useQuery(GET_PROJECT_DATA);
   // console.log(data);
   const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [projectData, setProjectData] = useState(null);
   const [projectImage, setProjectImage] = useState(null);
-  const [error, setError] = useState<string | null>(null);
-  const [projects, setProjects] = useState<ProjectData[]>([]);
+  const [error, setError] = useState<Error | null>(null);
+  const [projects, setProjects] = useState<ProjectApiResponse[]>([]);
   const [attributes, setAttributes] = useState(null);
-  const contractAddress = "0xd81cFfa66914174F7E4824fA226caB73eEBA12AD";
-
- 
+  const contractAddress = "0x5963208EbB7b1369459e08C3F9bA1f070cbBdf8b";
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginatedProjects, setPaginatedProjects] = useState<ProjectApiResponse[]>([]);
+ //contract attributes
   useEffect(() => {
     const fetchAttributes = async () => {
       try {
@@ -78,52 +121,61 @@ function Portfolio() {
   
     fetchAttributes();
   }, []);
-  
   useEffect(() => {
-    const projectIds = ["VCS-439", "VCS-674"]; // Array of project IDs
-    const fetchedProjects:ProjectData[] = [];
-  
-    const fetchProjectDataSequentially = async () => {
-      for (const projectId of projectIds) {
-        try {
-          // Fetch project details and image sequentially
-          const response = await fetch(`/api/bezero?projectId=${projectId}`);
-          if (!response.ok) {
-            throw new Error(`Error fetching data for project ${projectId}`);
-          }
-          const projectData = await response.json();
-          fetchedProjects.push(projectData);
-        } catch (err) {
-          console.error(`Error fetching data for project ${projectId}:`, err);
-          // Handle error or add partial data
-        }
+    // Fetch project data in parallel
+    const fetchProjectData = async (projectId: string): Promise<ProjectApiResponse> => {
+      const response = await fetch(`/api/bezero?projectId=${projectId}`);
+      if (!response.ok) {
+        throw new Error(`Error fetching data for project ${projectId}`);
       }
-  
-      setProjects(fetchedProjects);
-      setIsLoading(false);
+      return response.json();
     };
-  
-    fetchProjectDataSequentially();
+
+    const fetchAllProjectsData = async () => {
+      try {
+        // Filter out any undefined or non-string values
+        const validProjectIds = uniqueProjectIds.filter((id): id is string => typeof id === 'string');
+
+        // Use Promise.all to fetch data for all projects in parallel
+        const projectsData = await Promise.all(validProjectIds.map(fetchProjectData));
+        setProjects(projectsData);
+      } catch (error) {
+        // Since error is of type unknown, we need to do a type-check
+        if (error instanceof Error) {
+          console.error("Error fetching projects data:", error.message);
+          setError({ message: error.message });
+        } else {
+          console.error("An unexpected error occurred", error);
+          setError({ message: "An unexpected error occurred" });
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAllProjectsData();
   }, []);
   
-  
+  useEffect(() => {
+    setPaginatedProjects(projects.slice(0, ITEMS_PER_PAGE * currentPage));
+  }, [projects, currentPage]);
+
+  const handleLoadMore = () => {
+    setCurrentPage(currentPage + 1); // Increase the current page to load more items
+  };
   console.log(JSON.stringify(projects, null, 2));
   return (
     <div className="bg-[#181B21] flex flex-col pb-12">
-      <div className="bg-gray-800 self-center flex w-full max-w-[1520px] flex-col items-center mt-6 pt-12 px-16 max-md:max-w-full max-md:px-5">
-        <Image
-          priority
-          src={"/bg.svg"}
-          alt="Follow us on Twitter"
-          width={1000}
-          height={100}
-          style={{
-            height: "100%",
-            width: "100%",
-            objectFit: "cover",
-            objectPosition: "center",
-          }}
-        />
+   <div 
+  className="bg-gray-800 self-center flex w-full max-w-[1520px] flex-col items-center mt-6 pt-12 px-16 max-md:max-w-full max-md:px-5"
+  style={{ 
+    backgroundImage: `url('/Asereneforest.png')`,
+    backgroundSize: 'cover', // Ensures the image covers the entire div
+    backgroundPosition: 'center', // Centers the image
+    minHeight: '500px', // Adjust height as needed
+    width: '100%', // Adjust width as needed
+  }}
+>
       </div>
       <div className="text-white text-4xl font-bold leading-10 self-center whitespace-nowrap mt-24 max-md:mt-10">
         Toucans
@@ -161,7 +213,7 @@ function Portfolio() {
       <div className="items-stretch self-center flex gap-4 mt-6 px-5 max-md:justify-center">
         <div className="justify-between items-stretch border border-[color:var(--primary-5,#3D6EFF)] flex gap-2 p-4 rounded-xl border-solid">
           <div className="text-blue-500 text-base font-bold leading-6 grow whitespace-nowrap">
-            0x6c23...4242
+            <WalletAddressButton />
           </div>
           <img
             loading="lazy"
@@ -228,63 +280,25 @@ function Portfolio() {
         </div>
       </div>
       <div className="self-center w-full max-w-[1520px] mt-10 px-5 max-md:max-w-full">
-        <div className="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
-          <PortfolioCard imageUrl="/tree.png" title="Seefone" />
-        </div>
-      </div>
-      <div className="self-center w-[1520px] max-w-full mt-10 mb-20 max-md:mb-10 max-md:pr-5">
-        <div className="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
-          <div className="flex flex-col items-stretch w-6/12 max-md:w-full max-md:ml-0">
-            <div className="items-stretch bg-neutral-900 flex w-full grow flex-col mx-auto pb-6 rounded-xl max-md:mt-10">
-              <div className="items-start bg-gray-800 flex shrink-0 h-[350px] flex-col" />
-              <div className="justify-between items-stretch self-center flex w-[302px] max-w-full gap-5 mt-6">
-                <div className="items-stretch flex justify-between gap-2">
-                  <div className="text-slate-500 text-sm leading-6 grow whitespace-nowrap">
-                    Verified Toucan
-                  </div>
-                  <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/69e60b54292a42ff1a04ea299be2f6179c35bb0a71e4399f86c4e488289e6f48?"
-                    className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-                  />
-                </div>
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/f5e3ace5ee2facaae50de1198894af679d1e4d912c30723ef6f58912f56eecda?"
-                  className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-                />
-              </div>
-              <div className="text-white text-lg font-semibold leading-7 self-center whitespace-nowrap mt-2">
-                Seefone
-              </div>
-            </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+  {paginatedProjects.map((project) => (
+    <PortfolioCard
+      key={project.details[0].projectId}
+      imageUrl={project.image.url}
+      title={project.details[0].projectId}
+    />
+  ))}
+</div>
+{projects.length > paginatedProjects.length && (
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={handleLoadMore}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+            >
+              Load More
+            </button>
           </div>
-          <div className="flex flex-col items-stretch w-6/12 ml-5 max-md:w-full max-md:ml-0">
-            <div className="items-stretch bg-neutral-900 flex w-full grow flex-col mx-auto pb-6 rounded-xl max-md:mt-10">
-              <div className="items-start bg-gray-800 flex shrink-0 h-[350px] flex-col" />
-              <div className="justify-between items-stretch self-center flex w-[302px] max-w-full gap-5 mt-6">
-                <div className="items-stretch flex justify-between gap-2">
-                  <div className="text-slate-500 text-sm leading-6 grow whitespace-nowrap">
-                    Verified Toucan
-                  </div>
-                  <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/69e60b54292a42ff1a04ea299be2f6179c35bb0a71e4399f86c4e488289e6f48?"
-                    className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-                  />
-                </div>
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/f5e3ace5ee2facaae50de1198894af679d1e4d912c30723ef6f58912f56eecda?"
-                  className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-                />
-              </div>
-              <div className="text-white text-lg font-semibold leading-7 self-center whitespace-nowrap mt-2">
-                WMRV Toucan #101
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
