@@ -44,8 +44,8 @@ export default async function handler(
       return res.status(400).json({ message: "Project ID is required" });
     }
 
-    const detailsUrl = `https://aetlas-api.azurewebsites.net/BeZero?projectId=${projectId}`;
-    const imageUrl = `https://aetlas-api.azurewebsites.net/BeZero/${projectId}/image`;
+    const detailsUrl = `https://aetlas-api.azurewebsites.net/BeZeroTest?projectId=${projectId}`;
+    const imageUrl = `https://aetlas-api.azurewebsites.net/BeZeroTest/${projectId}/image`;
 
     // Fetch project details
     const detailsResponse = await fetch(detailsUrl);

@@ -12,13 +12,14 @@ const PortfolioCard: React.FC<CardComponentProps> = ({ imageUrl, title }) => {
     <div className="bg-gray-800 flex flex-col items-start">
       {/* Dynamic image here */}
       <Image
-      loading="lazy"
+        priority
         src={imageUrl}
         alt={title}
         width={100}
         height={56} // This maintains a 16:9 aspect ratio
         className="w-full object-cover rounded-t-xl"
         style={{ objectFit: "cover" }}
+        quality={75}
       />
     </div>
     <div className="flex justify-between items-center px-4 mt-4">
@@ -26,13 +27,13 @@ const PortfolioCard: React.FC<CardComponentProps> = ({ imageUrl, title }) => {
       <div className="flex items-center">
         <span className="text-slate-500 text-sm">Verified Toucans</span>
         <Image
-        loading="lazy"
+         priority
           src="/checkicon.svg"
           alt="Verified"
           height={20}
           width={20}
           className="ml-2"
-          quality={80}
+          quality={75}
         />
       </div>
       {/* Additional icon, static */}

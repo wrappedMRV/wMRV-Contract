@@ -1,5 +1,5 @@
 const proJectIds  = [
-    "VCS-766", "VCS-173", "VCS-173", "VCS-1464", "VCS-1146", 
+    "VCS-766", "VCS-173", "VCS-173",  "VCS-1146", 
     "VCS-173", "VCS-1037", "VCS-1464", "VCS-292", "VCS-762", 
     "VCS-762", "VCS-1121", "VCS-766", "VCS-1188", "VCS-917", 
     "VCS-786", "VCS-2098", "VCS-535", "VCS-535", "VCS-535", 
@@ -57,7 +57,7 @@ const proJectIds  = [
     "VCS-251", "VCS-493", "VCS-414", "VCS-784", "VCS-274", 
     "VCS-1497", "VCS-1195", "VCS-1044", "VCS-758", "VCS-1301", 
     "VCS-1187", "VCS-1187", "VCS-1521", "VCS-1521", "VCS-1580", 
-    "VCS-1189", "VCS-982", "VCS-1580", "VCS-265", "VCS-1021",     "VCS-1261",
+    "VCS-1189", "VCS-982", "VCS-1580", "VCS-265", "VCS-1021", "VCS-1261",
     "VCS-1079",
     "VCS-1985",
     "VCS-1671",

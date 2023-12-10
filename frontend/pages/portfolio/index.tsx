@@ -86,7 +86,7 @@ interface Error {
 }
 
 const ALCHEMY_RPC_URL = process.env.NEXT_PUBLIC_POLYGON_MUMBAI_RPC_URL || "";
-const ITEMS_PER_PAGE = 30; // Set the number of items you want per page
+const ITEMS_PER_PAGE = 10; // Set the number of items you want per page
 
 const Portfolio: React.FC = () => {
   // const { loading, error, data } = useQuery(GET_PROJECT_DATA);
@@ -133,21 +133,28 @@ const Portfolio: React.FC = () => {
 
     const fetchAllProjectsData = async () => {
       try {
-        // Filter out any undefined or non-string values
         const validProjectIds = uniqueProjectIds.filter((id): id is string => typeof id === 'string');
-
-        // Use Promise.all to fetch data for all projects in parallel
-        const projectsData = await Promise.all(validProjectIds.map(fetchProjectData));
-        setProjects(projectsData);
-      } catch (error) {
-        // Since error is of type unknown, we need to do a type-check
-        if (error instanceof Error) {
-          console.error("Error fetching projects data:", error.message);
-          setError({ message: error.message });
-        } else {
-          console.error("An unexpected error occurred", error);
-          setError({ message: "An unexpected error occurred" });
-        }
+    
+        const projectFetchPromises = validProjectIds.map(async (projectId) => {
+          try {
+            const response = await fetch(`/api/bezero?projectId=${projectId}`);
+            if (!response.ok) {
+              console.error(`Error fetching data for project ${projectId}`);
+              return null; // Return null or some default value for error cases
+            }
+            return response.json();
+          } catch (error) {
+            console.error(`Fetch error for project ${projectId}:`, error);
+            return null; // Return null or some default value for error cases
+          }
+        });
+    
+        const projectsData = await Promise.all(projectFetchPromises);
+        const validProjects = projectsData.filter(project => project !== null);
+        setProjects(validProjects);
+      } catch (error:any) {
+        console.error("Error fetching projects data:", error.message);
+        setError({ message: error.message });
       } finally {
         setIsLoading(false);
       }
