@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import CustomHeader from "@/../../components/CustomHeader";
-import ImageComponent from "@/../../components/ImageComponent";
-import CarbonAssetCard from "@/../../components/CarbonAssetCard";
-import SelectElem from "@/../../components/SelectElem";
-import { SelectElemProps } from "@/../../components/SelectElem";
+import CustomHeader from "../../components/CustomHeader";
+import ImageComponent from "../../components/ImageComponent";
+import CarbonAssetCard from "../../components/CarbonAssetCard";
+import SelectElem from "../../components/SelectElem";
+import { SelectElemProps } from "../../components/SelectElem";
 import {ethers} from "ethers";
-import { wrappedTCO02Abi } from "@/../../constants/WrappedTCO2";
+import { wrappedTCO02Abi } from "../../constants/WrappedTCO2";
 import dotenv from "dotenv";
 dotenv.config()
 interface StatisticProps {

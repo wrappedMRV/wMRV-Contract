@@ -5,10 +5,10 @@ import "./globals.css";
 import dynamic from "next/dynamic";
 const inter = Inter({ subsets: ["latin"] });
 
-const Navbar = dynamic(() => import("@/../../components/NavBar"), {
+const Navbar = dynamic(() => import("../components/NavBar"), {
   ssr: false,
 });
-const Footer = dynamic(() => import("@/../../components/Footer"), {
+const Footer = dynamic(() => import("../components/Footer"), {
   ssr: false,
 });
 
