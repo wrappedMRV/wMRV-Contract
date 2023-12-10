@@ -20,9 +20,9 @@ function Hero() {
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/4de93ac9f3ba29ae6199e238626534aa78e00b7f2a66b2fe530d074459265d69?"
                   className="aspect-square object-contain object-center w-5 overflow-hidden shrink-0 max-w-full"
                 />
-                <div className="text-white text-center text-base font-semibold leading-6 self-stretch grow whitespace-nowrap">
+                <button className="text-white text-center text-base font-semibold leading-6 self-stretch grow whitespace-nowrap">
                   Get Started
-                </div>
+                </button>
               </div>
               <div className="items-stretch self-stretch flex justify-between gap-5 mt-8 rounded-3xl max-md:max-w-full max-md:flex-wrap max-md:justify-center">
                 <div className="items-stretch flex grow basis-[0%] flex-col rounded-3xl">

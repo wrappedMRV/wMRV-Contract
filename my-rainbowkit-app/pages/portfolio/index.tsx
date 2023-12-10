@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ApolloClient, InMemoryCache, useQuery, gql } from "@apollo/client";
-
+import PortfolioCard from "../../components/PortfolioCard";
 const GET_PROJECT_DATA = gql`
   query GetProjectData {
     projects {
@@ -154,112 +154,7 @@ function Portfolio() {
       </div>
       <div className="self-center w-full max-w-[1520px] mt-10 px-5 max-md:max-w-full">
         <div className="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
-          <div className="flex flex-col items-stretch w-3/12 max-md:w-full max-md:ml-0">
-            <div className="items-stretch bg-neutral-900 flex w-full grow flex-col mx-auto pb-6 rounded-xl max-md:mt-10">
-              <div className="items-start bg-gray-800 flex shrink-0 h-[350px] flex-col" />
-              <div className="justify-between items-stretch self-center flex w-[302px] max-w-full gap-5 mt-6">
-                <div className="items-stretch flex justify-between gap-2">
-                  <div className="text-slate-500 text-sm leading-6 grow whitespace-nowrap">
-                    Verified Toucans
-                  </div>
-                  <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/a048481bfad02fb1af23aaf1937e3388b7d87b8c431773c4b420a81390fb8709?"
-                    className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-                  />
-                </div>
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/107b483f990f76a734589de31c4558f192d9a4c285931d008a2bd0a6060044c4?"
-                  className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-                />
-              </div>
-              <div className="text-white text-lg font-semibold leading-7 self-center whitespace-nowrap mt-2">
-                WMRV Toucan #101
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col items-stretch w-3/12 ml-5 max-md:w-full max-md:ml-0">
-            <div className="items-stretch bg-neutral-900 flex w-full grow flex-col mx-auto pb-6 rounded-xl max-md:mt-10">
-              <div className="items-start bg-gray-800 flex shrink-0 h-[350px] flex-col" />
-              <div className="justify-between items-stretch self-center flex w-[302px] max-w-full gap-5 mt-6">
-                <div className="items-stretch flex justify-between gap-2">
-                  <div className="text-slate-500 text-sm leading-6 grow whitespace-nowrap">
-                    Verified Toucans
-                  </div>
-                  <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/a048481bfad02fb1af23aaf1937e3388b7d87b8c431773c4b420a81390fb8709?"
-                    className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-                  />
-                </div>
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/107b483f990f76a734589de31c4558f192d9a4c285931d008a2bd0a6060044c4?"
-                  className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-                />
-              </div>
-              <div className="text-white text-lg font-semibold leading-7 self-center whitespace-nowrap mt-2">
-                WMRV Toucan #101
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col items-stretch w-3/12 ml-5 max-md:w-full max-md:ml-0">
-            <div className="items-stretch bg-neutral-900 flex w-full grow flex-col mx-auto pb-6 rounded-xl max-md:mt-10">
-              <div className="items-start bg-gray-800 flex shrink-0 h-[350px] flex-col" />
-              <div className="justify-between items-stretch self-center flex w-[302px] max-w-full gap-5 mt-6">
-                <div className="items-stretch flex justify-between gap-2">
-                  <div className="text-slate-500 text-sm leading-6 grow whitespace-nowrap">
-                    Verified Toucans
-                  </div>
-                  <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/a048481bfad02fb1af23aaf1937e3388b7d87b8c431773c4b420a81390fb8709?"
-                    className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-                  />
-                </div>
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/107b483f990f76a734589de31c4558f192d9a4c285931d008a2bd0a6060044c4?"
-                  className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-                />
-              </div>
-              <div className="text-white text-lg font-semibold leading-7 self-center whitespace-nowrap mt-2">
-                WMRV Toucan #101
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col items-stretch w-3/12 ml-5 max-md:w-full max-md:ml-0">
-            <div className="items-stretch bg-neutral-900 flex w-full grow flex-col mx-auto pb-6 rounded-xl max-md:mt-10">
-              <div className="justify-center items-stretch bg-gray-800 flex flex-col">
-                <img
-                  loading="lazy"
-                  srcSet="..."
-                  className="aspect-square object-contain object-center w-full overflow-hidden"
-                />
-              </div>
-              <div className="justify-between items-stretch self-center flex w-[302px] max-w-full gap-5 mt-6">
-                <div className="items-stretch flex justify-between gap-2">
-                  <div className="text-slate-500 text-sm leading-6 grow whitespace-nowrap">
-                    Verified Toucans
-                  </div>
-                  <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/a048481bfad02fb1af23aaf1937e3388b7d87b8c431773c4b420a81390fb8709?"
-                    className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-                  />
-                </div>
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/107b483f990f76a734589de31c4558f192d9a4c285931d008a2bd0a6060044c4?"
-                  className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-                />
-              </div>
-              <div className="text-white text-lg font-semibold leading-7 self-center whitespace-nowrap mt-2">
-                WMRV Toucan #101
-              </div>
-            </div>
-          </div>
+          <PortfolioCard imageUrl="/tree.png" title="Seefone" />
         </div>
       </div>
       <div className="self-center w-[1520px] max-w-full mt-10 mb-20 max-md:mb-10 max-md:pr-5">

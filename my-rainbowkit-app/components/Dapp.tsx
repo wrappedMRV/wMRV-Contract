@@ -7,6 +7,7 @@ import { parseEther } from "ethers";
 import Image from "next/image";
 import Hero from "./Hero";
 import Footer from "./Footer";
+import HowItWorkCard from "./HowItWorkCard";
 export default function Dapp() {
   const [receiverAddress, setReceiverAddress] = useState<string>("");
   const [transferAmount, setTransferAmout] = useState<string>("0");
@@ -48,61 +49,34 @@ export default function Dapp() {
         <div className="items-center bg-zinc-800 z-[1] flex w-full flex-col justify-center px-16 py-11 max-md:max-w-full max-md:px-5">
           <div className="flex w-[1050px] max-w-full flex-col mb-8">
             <div className="text-white text-4xl font-semibold leading-10 capitalize self-stretch mt-5 max-md:max-w-full">
-              How it works
+             <h3 className="px-4">How it works</h3>
             </div>
             <div className="text-white text-2xl leading-9 capitalize self-stretch mt-2.5 max-md:max-w-full">
-              Find out how to get started
+             <h4 className="px-4">Find out how to get started</h4>
             </div>
             <div className="self-stretch mt-12 max-md:max-w-full max-md:mt-10">
               <div className="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
-                <div className="flex flex-col items-stretch w-[33%] max-md:w-full max-md:ml-0">
-                  <div className="items-center bg-neutral-700 flex grow flex-col w-full pt-2.5 pb-8 px-8 rounded-3xl max-md:mt-8 max-md:px-5">
-                    <img
-                      loading="lazy"
-                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/3d9ab3da590d297808b8cdbc4208ed56172660e2963f21397b1d27029522ed4c?"
-                      className="aspect-square object-contain object-center w-full overflow-hidden"
-                    />
-                    <div className="self-stretch text-white text-center text-2xl font-semibold leading-8 capitalize mt-5">
-                      Setup Your wallet
-                    </div>
-                    <div className="self-stretch text-white text-center text-base leading-6 mt-2.5">
-                      Set up your wallet of choice. Connect it to the Animarket
-                      by clicking the wallet icon in the top right corner.
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col items-stretch w-[33%] ml-5 max-md:w-full max-md:ml-0">
-                  <div className="items-center self-stretch bg-neutral-700 flex grow flex-col w-full pt-2.5 pb-12 px-8 rounded-3xl max-md:mt-8 max-md:px-5">
-                    <img
-                      loading="lazy"
-                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/e1d8957d966a30a52f3659788f167899091cd3ca6d18198e32187cdb9ac42f7c?"
-                      className="aspect-square object-contain object-center w-full overflow-hidden"
-                    />
-                    <div className="self-stretch text-white text-center text-2xl font-semibold leading-8 capitalize mt-5">
-                      Create Collection
-                    </div>
-                    <div className="self-stretch text-white text-center text-base leading-6 mt-2.5">
-                      Upload your work and setup your collection. Add a
-                      description, social links and floor price.
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col items-stretch w-[33%] ml-5 max-md:w-full max-md:ml-0">
-                  <div className="items-center self-stretch bg-neutral-700 flex grow flex-col w-full pt-2.5 pb-8 px-8 rounded-3xl max-md:mt-8 max-md:px-5">
-                    <img
-                      loading="lazy"
-                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/9e0c618656d105c701598fe4c68a4de85447ac00cb7ed0043ff44544ed99c54e?"
-                      className="aspect-square object-contain object-center w-full overflow-hidden"
-                    />
-                    <div className="self-stretch text-white text-center text-2xl font-semibold leading-8 capitalize mt-5">
-                      Start Earning
-                    </div>
-                    <div className="self-stretch text-white text-center text-base leading-6 mt-2.5">
-                      Choose between auctions and fixed-price listings. Start
-                      earning by selling your NFTs or trading others.
-                    </div>
-                  </div>
-                </div>
+               
+                <HowItWorkCard
+                  imageUrl="/howitwork1.svg"
+                  title="Setup Your Wallet"
+                  text="Set up your wallet of choice. Connect it to the Animarket
+                      by clicking the wallet icon in the top right corner."
+                />
+                <HowItWorkCard
+                  imageUrl="/howitwork2.svg"
+                  title="Create Collection"
+                  text="Upload your work and setup your collection. Add a
+                      description, social links and floor price."
+                /> 
+                <HowItWorkCard
+                imageUrl="/howitwork3.svg"
+                title="Start Earning"
+                text="Choose between auctions and fixed-price listings. Start
+                earning by selling your NFTs or trading others."
+              />
+             
+          
               </div>
             </div>
           </div>
