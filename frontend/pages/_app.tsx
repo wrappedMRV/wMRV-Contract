@@ -7,13 +7,7 @@ import { ToastContainer } from "react-toastify";
 
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import {
-  arbitrum,
-  goerli,
-  mainnet,
-  optimism,
-  polygon,
-  base,
-  zora,
+  polygonMumbai,
 } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import Layout from "../components/layout";
@@ -21,14 +15,7 @@ import { ApolloProvider, InMemoryCache, ApolloClient } from "@apollo/client";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
-    mainnet,
-    polygon,
-    optimism,
-    arbitrum,
-    base,
-    zora,
-
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [goerli] : []),
+    polygonMumbai
   ],
   [publicProvider()],
 );
