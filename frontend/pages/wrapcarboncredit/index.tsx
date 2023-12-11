@@ -155,15 +155,15 @@ const WrapCarbonCredit: React.FC = () => {
         title="Retired Carbon Credits"
         className="text-lg leading-7 my-5"
       />
-      <div className="bg-neutral-900 flex flex-col mt-8 p-6 rounded-2xl w-full">
+      {/* <div className="bg-neutral-900 flex flex-col mt-8 p-6 rounded-2xl w-full">
         <div className="bg-gray-900 flex flex-col pt-6 pb-12 px-16 rounded-xl items-center">
           <ImageComponent
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/a3bba3606bd5405e439d7a06b0b18c4f9bef7941236d1b642ce371ef001e5911?apiKey=e3802405984e420cb725bf0a04130d05&"
             alt="Retired Carbon Credits"
-            className="w-full h-auto"
+            className="w-1/3 h-auto"
           />
         </div>
-      </div>
+      </div> */}
     </div>
   </div>
   );
