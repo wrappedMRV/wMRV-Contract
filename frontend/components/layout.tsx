@@ -14,7 +14,7 @@ type LayoutProps = {
 
 
 
- const metadata: Metadata = {
+export const metadata: Metadata = {
   title: 'Default Title', // Default title for all routes
   description: 'Default description for the website', // Default description
   // You can include other metadata like openGraph, twitter, etc.
