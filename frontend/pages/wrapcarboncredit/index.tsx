@@ -53,7 +53,7 @@ const Card: React.FC = () => (
   </div>
 );
 
-const Dashboard: React.FC = () => {
+const WrapCarbonCredit: React.FC = () => {
   const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -95,7 +95,7 @@ const Dashboard: React.FC = () => {
   //     for (const projectId of projectIds) {
   //       try {
   //         // Fetch project details and image sequentially
-  //         const response = await fetch(`/api/bezero?projectId=${projectId}`);
+  //         const response = await fetch(`/api/bezeroTest?projectId=${projectId}`);
   //         if (!response.ok) {
   //           throw new Error(`Error fetching data for project ${projectId}`);
   //         }
@@ -116,62 +116,57 @@ const Dashboard: React.FC = () => {
   
   console.log(JSON.stringify(data, null, 2));
   return (
-    <div className="bg-[#181B21] flex flex-col items-center">
-      <div className="flex bg-[#181B21] w-full flex-col m-20 p-5 items-start">
-        <div className="flex flex-col w-full ">
-          <div className="mx-auto py-10 ">
-            <CustomHeader
-              title="My Carbon Asset"
-              className="text-lg leading-7 mt-20"
-            />
-          </div>
-          <CarbonAssetCard />
-        </div>
-        <CustomHeader
-          title="Carbon dETFs Liquidity Positions"
-          className="text-lg leading-7 mt-20 p-5"
-        />
-        {/* Pool Token Details */}
-        <Card />
-        {/* Pending TCO2 Wrappers */}
-        <CustomHeader
-          title="Pending TCO2 Wrappers"
-          className="text-lg leading-7 mt-14 p-5"
-        />
-        <div className="items-stretch bg-neutral-900 flex flex-col mt-8 p-6 rounded-2xl w-3/4 mx-auto">
-          <div className="items-center bg-gray-900 flex flex-col px-4 py-7 rounded-xl">
-            <ImageComponent
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/19373cb2513406104eb572c4e6620a36fdfd38649c693c94c51904ba0dbdd1fc?apiKey=e3802405984e420cb725bf0a04130d05&"
-              alt="TCO2 Wrappers"
-              className="aspect-[1.09] object-contain object-center w-[70px] overflow-hidden max-w-full"
-            />
-            <CustomHeader
-              title="You have no pending TCO2 Wrappers"
-              className="text-2xl font-bold leading-9 mt-4"
-            />
-            <div className="text-slate-400 text-lg leading-7 mt-2">
-              Wrapping tokens takes 24 hours.
-            </div>
-          </div>
-        </div>
+    <div className="bg-[#181B21] flex flex-col items-center min-h-screen">
+    <div className="flex flex-col w-full m-20 p-5 items-start">
+      <CustomHeader
+        title="My Carbon Asset"
+        className="text-lg leading-7"
+      />
+      <CarbonAssetCard />
 
-        {/* Retired Carbon Credits */}
-        <CustomHeader
-          title="Retired Carbon Credits"
-          className="text-lg leading-7 mt-14 p-5"
-        />
-        <div className="items-stretch bg-neutral-900 flex flex-col mt-8 p-6 pt-6 pb-3.5 rounded-2xl w-3/4 mx-auto">
-          <div className="items-center bg-gray-900 flex flex-col pt-6 pb-12 px-16 rounded-xl">
-            <ImageComponent
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/a3bba3606bd5405e439d7a06b0b18c4f9bef7941236d1b642ce371ef001e5911?apiKey=e3802405984e420cb725bf0a04130d05&"
-              alt="Retired Carbon Credits"
-              className="aspect-square object-contain object-center w-16 overflow-hidden max-w-full mb-12"
-            />
+      <CustomHeader
+        title="Carbon dETFs Liquidity Positions"
+        className="text-lg leading-7 my-5"
+      />
+      <Card />
+
+      <CustomHeader
+        title="Pending TCO2 Wrappers"
+        className="text-lg leading-7 my-5"
+      />
+      <div className="bg-neutral-900 flex flex-col mt-8 p-6 rounded-2xl w-full">
+        <div className="bg-gray-900 flex flex-col px-4 py-7 rounded-xl items-center">
+          <ImageComponent
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/19373cb2513406104eb572c4e6620a36fdfd38649c693c94c51904ba0dbdd1fc?apiKey=e3802405984e420cb725bf0a04130d05&"
+            alt="TCO2 Wrappers"
+            className="w-[70px] h-auto"
+          />
+          <CustomHeader
+            title="You have no pending TCO2 Wrappers"
+            className="text-2xl font-bold leading-9 mt-4"
+          />
+          <div className="text-slate-400 text-lg leading-7 mt-2">
+            Wrapping tokens takes 24 hours.
           </div>
         </div>
       </div>
+
+      <CustomHeader
+        title="Retired Carbon Credits"
+        className="text-lg leading-7 my-5"
+      />
+      <div className="bg-neutral-900 flex flex-col mt-8 p-6 rounded-2xl w-full">
+        <div className="bg-gray-900 flex flex-col pt-6 pb-12 px-16 rounded-xl items-center">
+          <ImageComponent
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/a3bba3606bd5405e439d7a06b0b18c4f9bef7941236d1b642ce371ef001e5911?apiKey=e3802405984e420cb725bf0a04130d05&"
+            alt="Retired Carbon Credits"
+            className="w-full h-auto"
+          />
+        </div>
+      </div>
     </div>
+  </div>
   );
 };
 
-export default Dashboard;
+export default WrapCarbonCredit;

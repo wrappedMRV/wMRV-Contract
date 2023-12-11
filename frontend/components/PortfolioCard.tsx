@@ -15,6 +15,8 @@ const PortfolioCard: React.FC<CardComponentProps> = ({ imageUrl, title }) => {
         priority
         src={imageUrl}
         alt={title}
+        placeholder="blur"
+        blurDataURL={imageUrl}
         width={100}
         height={56} // This maintains a 16:9 aspect ratio
         className="w-full object-cover rounded-t-xl"
@@ -30,6 +32,7 @@ const PortfolioCard: React.FC<CardComponentProps> = ({ imageUrl, title }) => {
          priority
           src="/checkicon.svg"
           alt="Verified"
+          
           height={20}
           width={20}
           className="ml-2"

@@ -36,11 +36,16 @@ const client = new ApolloClient({
   uri: "https://api.thegraph.com/subgraphs/name/toucanprotocol/mumbai",
   cache: new InMemoryCache(),
 });
+
+const homePageMetadata = {
+  title: "Home Page Title",
+  description: "Description of the Home Page"
+};
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
-        <Layout>
+        <Layout metadata={homePageMetadata}>
           <ApolloProvider client={client}>
             <Component {...pageProps} />
             <ToastContainer

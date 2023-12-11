@@ -15,29 +15,14 @@ const NavBar = () => {
       </div>
       <div className="items-start flex justify-between gap-4 mt-1.5 pr-2 self-start max-md:max-w-full max-md:flex-wrap max-md:justify-center">
         <div className="items-stretch self-stretch flex justify-between gap-4 p-2">
-          <div className="text-white text-sm font-semibold leading-6 whitespace-nowrap">
-            Wrap Carbon Credits
+          <div className="text-white text-sm font-semibold leading-6 px-2 whitespace-nowrap">
+          <Link href="/wrapcarboncredit">  Wrap Carbon Credits</Link>
           </div>
           <div className="text-white text-sm font-semibold leading-6 whitespace-nowrap">
             <Link href="/portfolio">Portfolio</Link>
           </div>
         </div>
-        <div className="items-stretch bg-gray-900 self-stretch flex justify-between gap-1 px-4 py-2 rounded-xl">
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/f146e8f42f0d9a98c271ecf4d443d4da1ad6e969d9dd7093f05d45d91e4df134?"
-            className="aspect-square object-contain object-center w-6 justify-center items-center overflow-hidden shrink-0 max-w-full"
-          />
-          <div className="text-white text-sm font-semibold leading-6 grow whitespace-nowrap">
-            Polygon
-          </div>
-        </div>
-        <div className="items-stretch bg-gray-900 self-stretch flex justify-between gap-1 px-4 py-2 rounded-xl">
-          <div className="text-white text-sm font-semibold leading-6 grow whitespace-nowrap">
-            <Link href="/dashboard">Dashboard</Link>
-          </div>
-        </div>
-        <div className="text-white text-sm font-bold leading-6 whitespace-nowrap justify-center items-stretch self-stretch grow px-8 py-2 rounded-xl max-md:px-5">
+        <div className="text-white text-sm font-bold leading-6 whitespace-nowrap justify-center items-stretch self-stretch grow px-8 rounded-xl max-md:px-5">
           <ConnectButton />
         </div>
         <img

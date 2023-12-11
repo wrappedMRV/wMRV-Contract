@@ -10,6 +10,7 @@ import {Wallet, ethers } from "ethers";
 import { uniqueProjectIds }from "../../utils/projectId";
 import dotenv from "dotenv";
 import WalletAddressButton from "../../components/WalletAddressButton";
+import { FaSpinner } from "react-icons/fa";
 dotenv.config()
 const GET_PROJECT_DATA = gql`
   query GetProjectData {
@@ -124,7 +125,7 @@ const Portfolio: React.FC = () => {
   useEffect(() => {
     // Fetch project data in parallel
     const fetchProjectData = async (projectId: string): Promise<ProjectApiResponse> => {
-      const response = await fetch(`/api/bezero?projectId=${projectId}`);
+      const response = await fetch(`/api/bezero?projectId=${projectId}`,{cache: 'no-store'});
       if (!response.ok) {
         throw new Error(`Error fetching data for project ${projectId}`);
       }
@@ -132,33 +133,33 @@ const Portfolio: React.FC = () => {
     };
 
     const fetchAllProjectsData = async () => {
-      try {
-        const validProjectIds = uniqueProjectIds.filter((id): id is string => typeof id === 'string');
+      setIsLoading(true);
     
-        const projectFetchPromises = validProjectIds.map(async (projectId) => {
-          try {
-            const response = await fetch(`/api/bezero?projectId=${projectId}`);
-            if (!response.ok) {
-              console.error(`Error fetching data for project ${projectId}`);
-              return null; // Return null or some default value for error cases
-            }
-            return response.json();
-          } catch (error) {
-            console.error(`Fetch error for project ${projectId}:`, error);
-            return null; // Return null or some default value for error cases
+      const validProjectIds = uniqueProjectIds.filter((id): id is string => typeof id === 'string');
+    
+      const fetchPromises = validProjectIds.map(async (projectId) => {
+        try {
+          const response = await fetch(`/api/bezero?projectId=${projectId}`);
+          if (!response.ok) {
+            throw new Error(`Error fetching data for project ${projectId}`);
           }
-        });
+          return response.json();
+        } catch (error) {
+          console.error(`Fetch error for project ${projectId}:`, error);
+          return null; // Return null to indicate a failed fetch
+        }
+      });
     
-        const projectsData = await Promise.all(projectFetchPromises);
-        const validProjects = projectsData.filter(project => project !== null);
-        setProjects(validProjects);
-      } catch (error:any) {
-        console.error("Error fetching projects data:", error.message);
-        setError({ message: error.message });
-      } finally {
-        setIsLoading(false);
-      }
+      const results = await Promise.allSettled(fetchPromises);
+      const successfulResults: ProjectApiResponse[] = results
+        .filter(result => result.status === 'fulfilled' && result.value !== null)
+        .map(result => (result as PromiseFulfilledResult<ProjectApiResponse>).value);
+    
+      setProjects(successfulResults);
+      setIsLoading(false);
     };
+    
+    
 
     fetchAllProjectsData();
   }, []);
@@ -173,6 +174,7 @@ const Portfolio: React.FC = () => {
   console.log(JSON.stringify(projects, null, 2));
   return (
     <div className="bg-[#181B21] flex flex-col pb-12">
+      
    <div 
   className="bg-gray-800 self-center flex w-full max-w-[1520px] flex-col items-center mt-6 pt-12 px-16 max-md:max-w-full max-md:px-5"
   style={{ 
@@ -185,7 +187,7 @@ const Portfolio: React.FC = () => {
 >
       </div>
       <div className="text-white text-4xl font-bold leading-10 self-center whitespace-nowrap mt-24 max-md:mt-10">
-        Toucans
+        Verra
       </div>
       <div className="items-stretch self-center flex w-[168px] max-w-full justify-between gap-5 mt-6 px-5 max-md:justify-center">
         <img
@@ -209,13 +211,8 @@ const Portfolio: React.FC = () => {
           className="aspect-square object-contain object-center w-full justify-center items-center overflow-hidden shrink-0 flex-1"
         />
       </div>
-      <div className="self-center text-slate-500 text-center text-sm leading-6 max-w-[740px] mt-6 max-md:max-w-full">
-        Toucan Carbon Credits... Lorem Ipsum Toucan Carbon Credits... Lorem
-        Ipsum Toucan Carbon Credits... Lorem Ipsum Toucan Carbon Credits...
-        Lorem Ipsum Toucan Carbon Credits... Lorem Ipsum Toucan Carbon
-        Credits... Lorem Ipsum Toucan Carbon Credits... Lorem Ipsum Toucan
-        Carbon Credits... Lorem Ipsum Toucan Carbon Credits... Lorem Ipsum
-        Toucan Carbon Credits... Lorem Ipsum Toucan Carbon
+      <div className="self-center text-slate-500 text-center text-lg leading-6 max-w-[740px] mt-6 max-md:max-w-full">
+      Verra is a nonprofit organization that operates standards in environmental and social markets, including the world’s leading carbon crediting program, the Verified Carbon Standard (VCS) Program.
       </div>
       <div className="items-stretch self-center flex gap-4 mt-6 px-5 max-md:justify-center">
         <div className="justify-between items-stretch border border-[color:var(--primary-5,#3D6EFF)] flex gap-2 p-4 rounded-xl border-solid">
@@ -287,8 +284,15 @@ const Portfolio: React.FC = () => {
         </div>
       </div>
       <div className="self-center w-full max-w-[1520px] mt-10 px-5 max-md:max-w-full">
+      {isLoading && (
+        <div className="flex justify-center items-center">
+          <FaSpinner className="animate-spin text-4xl text-white" />
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-  {paginatedProjects.map((project) => (
+        
+  {paginatedProjects && paginatedProjects.map((project) => (
+    
     <PortfolioCard
       key={project.details[0].projectId}
       imageUrl={project.image.url}
