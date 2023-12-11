@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import Metadata from 'next';
+import type {Metadata} from 'next';
 
 // Dynamically import Navbar and Footer without server-side rendering
 const Navbar = dynamic(() => import('./NavBar'), { ssr: false });
@@ -12,10 +12,7 @@ type LayoutProps = {
   metadata: Metadata; // Include metadata in the layout props
 };
 
-type Metadata = {
-  title: string;
-  description: string;
-};
+
 
  const metadata: Metadata = {
   title: 'Default Title', // Default title for all routes
