@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
+import Metadata from 'next';
 
 // Dynamically import Navbar and Footer without server-side rendering
 const Navbar = dynamic(() => import('./NavBar'), { ssr: false });
@@ -16,15 +17,16 @@ type Metadata = {
   description: string;
 };
 
+ const metadata: Metadata = {
+  title: 'Default Title', // Default title for all routes
+  description: 'Default description for the website', // Default description
+  // You can include other metadata like openGraph, twitter, etc.
+};
 
-const Layout: React.FC<LayoutProps> = ({ children, metadata }) => {
+const Layout: React.FC<LayoutProps> = ({ children}) => {
   return (
     <>
-      <Head>
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
-        {/* Other metadata elements */}
-      </Head>
+    
       <Navbar />
       <main>{children}</main>
       <Footer />
