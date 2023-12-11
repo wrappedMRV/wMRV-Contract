@@ -1,15 +1,14 @@
-"use client";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { ReactNode } from "react";
 import type { Metadata } from "next";
-const Navbar = dynamic(() => import("./NavBar"), { ssr: false }); // Adjust the import path as needed
-const Footer = dynamic(() => import("./Footer"), { ssr: false }); // Adjust the import path as needed
-
+// Adjust the import path as needed
+import NavBar from "./NavBar";
+import Footer from "./Footer";
 type LayoutProps = {
   children: ReactNode; // This ensures that children is a valid React node
 };
-export const metadata: Metadata = {
+ const metadata: Metadata = {
   metadataBase: new URL('https://leerob.io'),
   title: {
     default: 'Lee Robinson',
@@ -53,7 +52,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navbar />
+      <NavBar />
       <main>{children}</main> {/* Children are rendered here */}
       <Footer />
     </>
