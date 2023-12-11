@@ -65,7 +65,7 @@ const WrapCarbonCredit: React.FC = () => {
       try {
         // Set up ethers.js provider and contract instance
         const provider = new ethers.JsonRpcProvider(ALCHEMY_RPC_URL);
-        const contractAddress = "0xd81cFfa66914174F7E4824fA226caB73eEBA12AD";
+        const contractAddress = "0x5963208EbB7b1369459e08C3F9bA1f070cbBdf8b";
         const contractABI = wrappedTCO02Abi;
         const contract = new ethers.Contract(
           contractAddress,
@@ -122,7 +122,7 @@ const WrapCarbonCredit: React.FC = () => {
         title="My Carbon Asset"
         className="text-lg leading-7"
       />
-      <CarbonAssetCard />
+      <CarbonAssetCard attributes={attributes} />
 
       <CustomHeader
         title="Carbon dETFs Liquidity Positions"

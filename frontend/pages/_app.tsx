@@ -10,7 +10,7 @@ import {
   polygonMumbai,
 } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
-import Layout from "../components/layout";
+import Layout from "./layout";
 import { ApolloProvider, InMemoryCache, ApolloClient } from "@apollo/client";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(

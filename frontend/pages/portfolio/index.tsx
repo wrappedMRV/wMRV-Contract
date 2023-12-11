@@ -99,7 +99,7 @@ const Portfolio: React.FC = () => {
   const [error, setError] = useState<Error | null>(null);
   const [projects, setProjects] = useState<ProjectApiResponse[]>([]);
   const [attributes, setAttributes] = useState(null);
-  const contractAddress = "0x5963208EbB7b1369459e08C3F9bA1f070cbBdf8b";
+  const contractAddress = "0xd81cFfa66914174F7E4824fA226caB73eEBA12AD";
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedProjects, setPaginatedProjects] = useState<ProjectApiResponse[]>([]);
  //contract attributes

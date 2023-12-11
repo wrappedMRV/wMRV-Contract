@@ -1,5 +1,8 @@
 import SelectElem from "./SelectElem";
 import CustomHeader from "./CustomHeader";
+interface CarbonAssetCardProps {
+  attributes: any; // Replace 'any' with a more specific type if possible
+}
 const ChainInfo: React.FC<{ chainName: string; tokenCount: string }> = ({
   chainName,
   tokenCount,
@@ -47,7 +50,8 @@ const TokenRow: React.FC<{
 );
 
 // The main card component
-const CarbonAssetCard: React.FC = () => (
+const CarbonAssetCard: React.FC<CarbonAssetCardProps>= ({attributes}) => (
+  
   <div className="bg-[#141414] rounded-xl p-6 w-3/4  mx-auto">
     <ChainInfo chainName="Matic Chain" tokenCount="2" />
     <div className="flex justify-between text-xl text-white py-2">
