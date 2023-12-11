@@ -26,10 +26,9 @@ const func: DeployFunction = async function ({
       "WrappedTCO2Factory",
       WrappedTCO2Factory.address
     )) as WrappedTCO2Factory;
-    console.log("tejhdhjds")
     console.log("Adding request...");
     await wrappedTCO2Factory.addRequest(
-      "https://aetlas-api.azurewebsites.net/BeZero?projectId=",
+      "https://aetlas-api.azurewebsites.net/BeZeroTest?projectId=",
       "0,beZeroRating",
     );
 
@@ -57,7 +56,6 @@ const func: DeployFunction = async function ({
       address: wrappedTCO2Address,
     });
     console.log("WrappedTCO2 deployed to:", wrappedTCO2Address);
-    console.log(`npx hardhat verify --network mumbai ${wrappedTCO2Address} ${tco2Address}`)
   }
 };
 

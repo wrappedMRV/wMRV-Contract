@@ -75,13 +75,13 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 1000, // Adjust the number of runs to your needs
+        runs: 1000,
       },
     },
   },
   networks: {
     hardhat: {
-      chainId: 1337, // We set 1337 to make interacting with MetaMask simpler
+      chainId: 1337,
       allowUnlimitedContractSize: false,
       hardfork: "merge",
     },
@@ -109,7 +109,7 @@ const config: HardhatUserConfig = {
     target: "ethers-v5",
   },
   gasReporter: {
-    enabled: Boolean(process.env.REPORT_GAS),
+    enabled: false,
   },
   etherscan: {
     apiKey: POLYGONSCAN_API_KEY,
