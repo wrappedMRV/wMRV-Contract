@@ -45,7 +45,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
-        <Layout metadata={homePageMetadata}>
+        <Layout >
           <ApolloProvider client={client}>
             <Component {...pageProps} />
             <ToastContainer
